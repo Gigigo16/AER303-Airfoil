@@ -58,9 +58,12 @@ for i in alpha:
     offset = 50
     Hg2Pa = 9.80665
     p_top = (data['p_airfoil'][0][0:12]*gain + offset)*Hg2Pa
-    p_bot = (data['p_airfoil'][0][12:-1]*gain + offset)*Hg2Pa
+    p_bot = (data['p_airfoil'][0][12:19]*gain + offset)*Hg2Pa
     p_r1 = (data['p_rake1']*gain + offset)*Hg2Pa
     p_r2 = (data['p_rake2']*gain + offset)*Hg2Pa
+
+    print((data['p_airfoil'][0]*gain + offset)*Hg2Pa)
+    print(p_top, p_bot)
 
     p_r1_err = np.zeros_like(p_r1) #temp
     p_r2_err = np.zeros_like(p_r2) #temp
@@ -85,7 +88,8 @@ for i in alpha:
     y = [0, 1.67, 3.33, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16.67, 18.33, 20]
     # plt.plot(v_r1[0], y)
     plt.plot(air_top_tap_pos, Cp_top)
-    plt.plot(air_bot_tap_pos[0:6], Cp_bot)
+    plt.plot(air_bot_tap_pos, Cp_bot)
+    plt.gca().invert_yaxis()
     plt.title(i)
     plt.show()
 
