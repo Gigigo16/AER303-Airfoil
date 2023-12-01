@@ -1,5 +1,3 @@
-from scipy import integrate
-import pandas as pd
 import numpy as np
 
 def NormalForce(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top: np.array, top_p_pos: np.array, bot_p_pos: np.array):

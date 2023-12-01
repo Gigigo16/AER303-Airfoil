@@ -2,12 +2,15 @@
 Main script for running all data processing and plotting.
     {Depenancies}: scipy, matplotlib, numpy
 """
-#imports:
+# IMPORTS
+#####################
+# Dependancies
 from scipy import io
 import matplotlib.pyplot as plt
-import pandas as pd
 import numpy as np
 import csv
+
+# Custom Functions/libraies
 from ReynoldsNumber import *
 from Forces import *
 

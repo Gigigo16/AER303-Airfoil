@@ -13,6 +13,13 @@ The file structure for this repository is structured as follows:
 * **Src**
   * Contains source code for data processer
 
+## Dependancies 
+The code in this respository has the following depedancies:
+- [Python 3.8+](https://www.python.org/) --> Version 3.11 recommended
+- [Numpy](https://numpy.org/)
+- [Matplotlib](https://matplotlib.org/)
+- [Scipi](https://scipy.org/)
+
 ## Authors
 
 - [Rodrigo Salazar](https://www.github.com/Gigigo16)
