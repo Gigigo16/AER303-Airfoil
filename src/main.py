@@ -13,6 +13,7 @@ import csv
 # Custom Functions/libraies
 from ReynoldsNumber import *
 from Forces import *
+from Velocity import *
 
 
 # DEFINITIONS
@@ -51,6 +52,15 @@ for i in alpha:
     data = io.loadmat(".\data\Filtered\Experimental_data_%d.mat"%i)
     p_foil_top = data['p_airfoil'][0][0:12]
     p_foil_bot = data['p_airfoil'][0][12:18]
+
+    # FINDING THE WAKE VELOCITY DIST:
+    p_r1 = data['p_rake1']*115 - 5
+    p_r2 = data['p_rake2']*115 - 5
+    v_r1, v_r2 = Velocity(p_r1, p_r2)
+    print(v_r2)
+
+
+
     
 
 
