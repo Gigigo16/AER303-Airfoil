@@ -1,6 +1,6 @@
 import numpy as np
 
-def NormalForce(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top: np.array, top_p_pos: np.array, bot_p_pos: np.array):
+def NormalForce(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot: np.array, top_p_pos: np.array, bot_p_pos: np.array):
     '''
     Returns the Normal force for pressure distribution.
 

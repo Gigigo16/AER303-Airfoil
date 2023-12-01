@@ -14,6 +14,7 @@ import csv
 from ReynoldsNumber import *
 from Forces import *
 from Velocity import *
+from Coefficients import *
 
 
 # DEFINITIONS
@@ -56,24 +57,35 @@ for i in alpha:
     gain = 115
     offset = 50
     Hg2Pa = 9.80665
-    p_foil_top = (data['p_airfoil'][0][0:12]*gain + offset)*Hg2Pa
-    p_foil_bot = (data['p_airfoil'][0][12:18]*gain + offset)*Hg2Pa
+    p_top = (data['p_airfoil'][0][0:12]*gain + offset)*Hg2Pa
+    p_bot = (data['p_airfoil'][0][12:-1]*gain + offset)*Hg2Pa
     p_r1 = (data['p_rake1']*gain + offset)*Hg2Pa
     p_r2 = (data['p_rake2']*gain + offset)*Hg2Pa
 
-    # finding the wake velocity distribution:
     p_r1_err = np.zeros_like(p_r1) #temp
     p_r2_err = np.zeros_like(p_r2) #temp
-    U_inf, v_r1, v_r2, v_r1_err, v_r2_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err)
-    print(U_inf)
-    # it was found that one port in the rake was outputting abnormally high. interpolating over it:
-    k = 14 #index of bad port 
-    v_r1[0][k] = 0.5*(v_r1[0][k+1] + v_r1[0][k-1])
+    p_top_err = np.zeros_like(p_top) #temp
+    p_bot_err = np.zeros_like(p_bot) #temp
 
+    # finding the wake velocity distribution:
+    U_inf, U_inf_err, v_r1, v_r2, v_r1_err, v_r2_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err)
+    # print(U_inf, U_inf_err)
+    
+    #finding the dynamic freestream pressure
+    q_inf, q_inf_err = DynPressure(U_inf, U_inf_err)
+    # print(q_inf)
+
+    #finding the Cp distribution over the airfoil
+    Cp_top, Cp_bot, Cp_top_err, Cp_bot_err = Cpressure(p_top, p_bot, p_top_err, p_bot_err, q_inf, q_inf_err)
+    # print(Cp_top)
+
+    print(p_bot, Cp_bot, air_bot_tap_pos)
 
     ##TEST:
     y = [0, 1.67, 3.33, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16.67, 18.33, 20]
-    plt.plot(v_r1[0], y)
+    # plt.plot(v_r1[0], y)
+    plt.plot(air_top_tap_pos, Cp_top)
+    plt.plot(air_bot_tap_pos[0:6], Cp_bot)
     plt.title(i)
     plt.show()
 
@@ -89,10 +101,10 @@ for i in alpha:
 # TOO BE REMOVED BEFORE SUBMISSION TEST ONLY
 #mat = io.loadmat("data\Filtered\Experimental_data_0.mat")
 
-p_foil_top = data['p_airfoil'][0][0:12]
-p_foil_bot = data['p_airfoil'][0][12:19]
+# p_foil_top = data['p_airfoil'][0][0:12]
+# p_foil_bot = data['p_airfoil'][0][12:19]
 
-plt.plot(air_top_tap_pos, p_foil_top)
-plt.plot(air_bot_tap_pos, p_foil_bot)
-plt.show()
+# plt.plot(air_top_tap_pos, p_foil_top)
+# plt.plot(air_bot_tap_pos, p_foil_bot)
+# plt.show()
 ####################################################################

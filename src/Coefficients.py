@@ -1,6 +1,6 @@
 import numpy as np
 
-def Cp(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top: np.array, top_p_pos: np.array, bot_p_pos: np.array):
+def Cpressure(p_top: np.array, p_bot: np.array, p_top_err: np.array, p_bot_err: np.array, q_inf: np.float64, q_inf_err: np.float64):
     '''
     Returns the Coefficient of pressure distribution.
 
@@ -10,18 +10,29 @@ def Cp(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top: np.arra
         top airfoil pressure distribution
     p_bot : np.array
         bottom airfoil pressure distribution
-    p_err_top : np.array
+    p_top_err : np.array
         top airfoil perssure error
-    p_err_bot : np.array
+    p_bot_err : np.array
         bottom airfoil perssure error
-    top_p_pos : list
-        top airfoil pressure tap positions [x; y]
-    bot_p_pos : list
-        bottom airfoil pressure tap positions [x; y]
+    q_inf : np.float64
+        Dynamic Pressure
+    q_inf_err : np.float64
+        Dynamic Pressure error
 
     Returns:
     --------
-    N: Normal Force
-    dN: Normal Force uncertainty
+    Cp_top: Coefficient of pressure top
+    Cp_top_err: Coefficient of pressure top error
+    Cp_bot: Coefficient of pressure bottom
+    Cp_bot_err: Coefficient of pressure bottom error
     '''
+
+    Cp_top = p_top/q_inf
+    Cp_bot = p_bot/q_inf
+
+    Cp_top_err = Cp_top * (np.sqrt((np.square((p_top_err/p_top)) + np.square((q_inf_err/q_inf)))))
+    Cp_bot_err = Cp_bot * (np.sqrt((np.square((p_bot_err/p_bot)) + np.square((q_inf_err/q_inf)))))
+
+    return Cp_top, Cp_bot, Cp_top_err, Cp_bot_err
+
     
