@@ -9,7 +9,7 @@ import pandas as pd
 import numpy as np
 import csv
 from ReynoldsNumber import *
-#from Forces import *
+from Forces import *
 
 
 # DEFINITIONS
@@ -37,6 +37,10 @@ for i in range(1,len(data)):
         airfoil_top.append([float(data[i][0]), float(data[i][1])])
     elif float(data[i][0]) in air_bot_tap_pos:
         airfoil_bot.append([float(data[i][0]), float(data[i][1])])
+# Convert to np.array
+airfoil_top = np.array(airfoil_top)*0.1  # Multiplying values by cord length (values given are per unit cord)
+airfoil_bot = np.array(airfoil_bot)*0.1 # Multiplying values by cord length (values given are per unit cord)
+
 
 # PROCESSING DATA
 ########################
@@ -53,7 +57,7 @@ Re = ReynoldsNumber(L=0.1)
 
 ####################################################################
 # TOO BE REMOVED BEFORE SUBMISSION TEST ONLY
-mat = io.loadmat("data\Filtered\Experimental_data_0.mat")
+#mat = io.loadmat("data\Filtered\Experimental_data_0.mat")
 
 p_foil_top = data['p_airfoil'][0][0:12]
 p_foil_bot = data['p_airfoil'][0][12:19]

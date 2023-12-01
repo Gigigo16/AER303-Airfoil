@@ -1,9 +1,8 @@
 from scipy import integrate
 import pandas as pd
 import numpy as np
-import math
 
-def NormalForce(p_top: np.array, p_bot: np.array, top_p_pos: list, bot_p_pos: list, airfoil: np.array):
+def NormalForce(p_top: np.array, p_bot: np.array, top_p_pos: np.array, bot_p_pos: np.array):
     '''
     Returns the Normal force for pressure distribution.
 
@@ -23,13 +22,26 @@ def NormalForce(p_top: np.array, p_bot: np.array, top_p_pos: list, bot_p_pos: li
     N: Normal Force
     dN: Normal Force uncertainty
     '''
-    x_upper = top_p_pos[:][0]
-    x_lower = top_p_pos[:][1]
-    theta_upper=[]*len(top_p_pos)
-    theta_lower=[]*len(bot_p_pos)
-    for i in range(1,len(top_p_pos)):
-        theta_upper[i] = math.acos((top_p_pos[i][1]-top_p_pos[i-1][1])/(top_p_pos[i][0]-top_p_pos[i-1][0]))
-    for i in range(1,len(bot_p_pos)):
-        theta_lower[i] = math.acos((bot_p_pos[i][1]-bot_p_pos[i-1][1])/(bot_p_pos[i][0]-bot_p_pos[i-1][0]))
+    x_upper = top_p_pos[:, 0]
+    x_lower = bot_p_pos[:, 0]
+    y_upper = top_p_pos[:, 1]
+    y_lower = bot_p_pos[:, 1]
     
-    integrate.trapezoid()
+    theta_upper= np.arctan(np.diff(y_upper)/np.diff(x_upper))
+    theta_lower= np.arctan(np.diff(y_lower)/np.diff(x_lower))
+    
+    ds_upper = np.sqrt(np.diff(x_upper)**2 + np.diff(y_upper)**2)
+    ds_lower = np.sqrt(np.diff(x_lower)**2 + np.diff(y_lower)**2)
+    
+    # Trapezoidal numerical integration
+    for i in range(len(ds_upper)):
+        N += -0.5 * (p_top[i] + p_top[i+1]) * np.cos(theta_upper[i]) * ds_upper[i]
+    
+    for i in range(len(ds_lower)):
+        N += 0.5 * (p_bot[i] + p_bot[i+1]) * np.cos(theta_lower[i]) * ds_lower[i]
+    
+    
+    dN = 0 #TODO
+    
+    
+    return N, dN
