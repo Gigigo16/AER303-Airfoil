@@ -41,7 +41,7 @@ for i in range(1,len(data)):
 # PROCESSING DATA
 ########################
 for i in alpha:
-    data = io.loadmat(".\data\Filtered\F-Experimental_data_%d.mat"%i)
+    data = io.loadmat(".\data\Filtered\Experimental_data_%d.mat"%i)
     p_foil_top = data['p_airfoil'][0][0:12]
     p_foil_bot = data['p_airfoil'][0][12:18]
 
@@ -53,7 +53,7 @@ Re = ReynoldsNumber(L=0.1)
 
 ####################################################################
 # TOO BE REMOVED BEFORE SUBMISSION TEST ONLY
-mat = io.loadmat("data\Filtered\F-Experimental_data_0.mat")
+mat = io.loadmat("data\Filtered\Experimental_data_0.mat")
 
 p_foil_top = data['p_airfoil'][0][0:12]
 p_foil_bot = data['p_airfoil'][0][12:19]

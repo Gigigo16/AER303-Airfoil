@@ -23,6 +23,8 @@ def NormalForce(p_top: np.array, p_bot: np.array, top_p_pos: list, bot_p_pos: li
     N: Normal Force
     dN: Normal Force uncertainty
     '''
+    x_upper = top_p_pos[:][0]
+    x_lower = top_p_pos[:][1]
     theta_upper=[]*len(top_p_pos)
     theta_lower=[]*len(bot_p_pos)
     for i in range(1,len(top_p_pos)):

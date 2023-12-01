@@ -18,7 +18,7 @@ for j = 1:length(nums)
     data.wpdata = wpdatafilt;
     data.wpdata2 = wpdata2filt;
     data.wpdata2;
-    save(".\data\Filtered\2 - Experimental_data_"+nums(j)+".mat","-struct","data")
+    save(".\data\Filtered\Experimental_data_"+nums(j)+".mat","-struct","data")
 end
 %%
 function [Sig_filt] = SigFilt(Sig)
