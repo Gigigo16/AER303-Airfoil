@@ -54,7 +54,7 @@ for i in alpha:
 
     # data calibration:
     gain = 115
-    offset = 40
+    offset = 50
     Hg2Pa = 9.80665
     p_foil_top = (data['p_airfoil'][0][0:12]*gain + offset)*Hg2Pa
     p_foil_bot = (data['p_airfoil'][0][12:18]*gain + offset)*Hg2Pa
@@ -66,6 +66,16 @@ for i in alpha:
     p_r2_err = np.zeros_like(p_r2) #temp
     U_inf, v_r1, v_r2, v_r1_err, v_r2_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err)
     print(U_inf)
+    # it was found that one port in the rake was outputting abnormally high. interpolating over it:
+    k = 14 #index of bad port 
+    v_r1[0][k] = 0.5*(v_r1[0][k+1] + v_r1[0][k-1])
+
+
+    ##TEST:
+    y = [0, 1.67, 3.33, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16.67, 18.33, 20]
+    plt.plot(v_r1[0], y)
+    plt.title(i)
+    plt.show()
 
 
 
