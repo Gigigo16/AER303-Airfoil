@@ -49,15 +49,23 @@ airfoil_bot = np.array(airfoil_bot)*0.1 # Multiplying values by cord length (val
 # PROCESSING DATA
 ########################
 for i in alpha:
-    data = io.loadmat(".\data\Filtered\Experimental_data_%d.mat"%i)
-    p_foil_top = data['p_airfoil'][0][0:12]
-    p_foil_bot = data['p_airfoil'][0][12:18]
 
-    # FINDING THE WAKE VELOCITY DIST:
-    p_r1 = data['p_rake1']*115 - 5
-    p_r2 = data['p_rake2']*115 - 5
-    v_r1, v_r2 = Velocity(p_r1, p_r2)
-    print(v_r2)
+    data = io.loadmat(".\data\Filtered\Experimental_data_%d.mat"%i)
+
+    # data calibration:
+    gain = 115
+    offset = 40
+    Hg2Pa = 9.80665
+    p_foil_top = (data['p_airfoil'][0][0:12]*gain + offset)*Hg2Pa
+    p_foil_bot = (data['p_airfoil'][0][12:18]*gain + offset)*Hg2Pa
+    p_r1 = (data['p_rake1']*gain + offset)*Hg2Pa
+    p_r2 = (data['p_rake2']*gain + offset)*Hg2Pa
+
+    # finding the wake velocity distribution:
+    p_r1_err = np.zeros_like(p_r1) #temp
+    p_r2_err = np.zeros_like(p_r2) #temp
+    U_inf, v_r1, v_r2, v_r1_err, v_r2_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err)
+    print(U_inf)
 
 
 
