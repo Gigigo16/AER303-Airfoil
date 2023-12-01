@@ -18,4 +18,4 @@ The file structure for this repository is structured as follows:
 - [Rodrigo Salazar](https://www.github.com/Gigigo16)
 - [Felix Hlady](https://www.github.com/FelHy66)
 - [Sahil Swali]()
-- [Sritajes Murugan](https://github.com/smurugan23)
+- [Sritejas Murugan](https://github.com/smurugan23)
