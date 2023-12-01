@@ -48,8 +48,7 @@ for i in alpha:
     data = io.loadmat(".\data\Filtered\Experimental_data_%d.mat"%i)
     p_foil_top = data['p_airfoil'][0][0:12]
     p_foil_bot = data['p_airfoil'][0][12:18]
-
-Re = ReynoldsNumber(L=0.1)
+    
 
 
 
