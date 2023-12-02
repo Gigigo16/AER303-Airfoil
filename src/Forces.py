@@ -96,3 +96,61 @@ def AxialForce(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top:
     dN = np.sqrt(dN)
     
     return A, dA
+
+def LiftForce(alpha: float, dalpha: float, N: float, dN: float, A: float, dA: float):
+    '''
+    Returns the Lift force for given normal and axial forces at given AoA.
+
+    Parameters:
+    -----------   
+    alpha : float
+        angle of attack (degrees)
+    dalpha : float
+        angle of attack uncertainty (degrees)
+    N : float
+        Normal force (Newtons)
+    dN : float
+        Normal force uncertainty (Newtons)
+    A : float
+        Axial force (Newtons)
+    dA : float
+        Axial force uncertainty (Newtons)
+    Returns:
+    --------
+    L: Lift Force
+    dL: Lift Force uncertainty
+    '''
+
+    L = N * np.cos(np.deg2rad(alpha)) - A * np.sin(np.deg2rad(alpha))
+    dL =  np.sqrt((np.cos(np.deg2rad(alpha)) * dN)**2 + (np.sin(np.deg2rad(alpha)) * dA)**2 + ((-N*np.sin(np.deg2rad(alpha)) - A*np.cos(np.deg2rad(alpha)))*np.deg2rad(alpha))**2)
+
+    return L, dL
+
+def PressureDragForce(alpha: float, dalpha: float, N: float, dN: float, A: float, dA: float):
+    '''
+    Returns the Pressure drag force for given normal and axial forces at given AoA.
+
+    Parameters:
+    -----------   
+    alpha : float
+        angle of attack (degrees)
+    dalpha : float
+        angle of attack uncertainty (degrees)
+    N : float
+        Normal force (Newtons)
+    dN : float
+        Normal force uncertainty (Newtons)
+    A : float
+        Axial force (Newtons)
+    dA : float
+        Axial force uncertainty (Newtons)
+    Returns:
+    --------
+    Dp: Pressure Drag Force
+    dDp: Pressure Drag Force uncertainty
+    '''
+
+    Dp = N * np.sin(np.deg2rad(alpha)) + A * np.cos(np.deg2rad(alpha))
+    dDp =  np.sqrt((np.sin(np.deg2rad(alpha)) * dN)**2 + (np.cos(np.deg2rad(alpha)) * dA)**2 + ((N*np.cos(np.deg2rad(alpha)) - A*np.sin(np.deg2rad(alpha)))*np.deg2rad(alpha))**2)
+
+    return Dp, dDp
