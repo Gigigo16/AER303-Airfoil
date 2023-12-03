@@ -54,9 +54,9 @@ for i in alpha:
     data = io.loadmat(".\data\Filtered\Experimental_data_%d.mat"%i)
 
     # data calibration:
-    gain = 115
-    offset = 50
-    Hg2Pa = 9.80665
+    gain = 115 # From in lab calibration code
+    offset = 50 # From in lab calibration code
+    Hg2Pa = 9.80665 #inHg to Pa convertion factor
     p_top = (data['p_airfoil'][0][0:12]*gain + offset)*Hg2Pa
     p_bot = (data['p_airfoil'][0][12:19]*gain + offset)*Hg2Pa
     p_r1 = (data['p_rake1']*gain + offset)*Hg2Pa
