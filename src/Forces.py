@@ -21,8 +21,8 @@ def NormalForce(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot
 
     Returns:
     --------
-    N: Normal Force
-    dN: Normal Force uncertainty
+    n: Normal Force
+    dn: Normal Force uncertainty
     '''
     x_upper = top_p_pos[:, 0]
     x_lower = bot_p_pos[:, 0]
@@ -35,19 +35,22 @@ def NormalForce(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot
     ds_upper = np.sqrt(np.diff(x_upper)**2 + np.diff(y_upper)**2)
     ds_lower = np.sqrt(np.diff(x_lower)**2 + np.diff(y_lower)**2)
     
+    n = 0
+    dn = 0
+
     # Trapezoidal numerical integration
     for i in range(len(ds_upper)):
-        N += -0.5 * (p_top[i] + p_top[i+1]) * np.cos(theta_upper[i]) * ds_upper[i]
-        dN += (-0.5*p_err_top[i]*np.cos(theta_upper)*ds_upper[i])**2 + (-0.5*p_err_top[i+1]*np.cos(theta_upper[i])*ds_upper[i])**2
+        n += -0.5 * (p_top[i] + p_top[i+1]) * np.cos(theta_upper[i]) * ds_upper[i]
+        dn += (-0.5*p_err_top[i]*np.cos(theta_upper)*ds_upper[i])**2 + (-0.5*p_err_top[i+1]*np.cos(theta_upper[i])*ds_upper[i])**2
     
     for i in range(len(ds_lower)):
-        N += 0.5 * (p_bot[i] + p_bot[i+1]) * np.cos(theta_lower[i]) * ds_lower[i]
-        dN += (0.5*p_err_bot[i]*np.cos(theta_lower)*ds_lower[i])**2 + (0.5*p_err_bot[i+1]*np.cos(theta_lower[i])*ds_lower[i])**2
+        n += 0.5 * (p_bot[i] + p_bot[i+1]) * np.cos(theta_lower[i]) * ds_lower[i]
+        dn += (0.5*p_err_bot[i]*np.cos(theta_lower)*ds_lower[i])**2 + (0.5*p_err_bot[i+1]*np.cos(theta_lower[i])*ds_lower[i])**2
     
     # Calculating error (position error assumed to be 0)
-    dN = np.sqrt(dN)
+    dn = np.sqrt(dn)
     
-    return N, dN
+    return n, dn
 
 def AxialForce(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top: np.array, top_p_pos: np.array, bot_p_pos: np.array):
     '''
@@ -69,8 +72,8 @@ def AxialForce(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top:
         bottom airfoil pressure tap positions [x; y]
     Returns:
     --------
-    A: Axial Force
-    dN: Axial Force uncertainty
+    a: Axial Force
+    da: Axial Force uncertainty
     '''
     x_upper = top_p_pos[:, 0]
     x_lower = bot_p_pos[:, 0]
@@ -83,21 +86,24 @@ def AxialForce(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top:
     ds_upper = np.sqrt(np.diff(x_upper)**2 + np.diff(y_upper)**2)
     ds_lower = np.sqrt(np.diff(x_lower)**2 + np.diff(y_lower)**2)
     
+    a = 0
+    da = 0
+
     # Trapezoidal numerical integration
     for i in range(len(ds_upper)):
-        A += -0.5 * (p_top[i] + p_top[i+1]) * np.sin(theta_upper[i]) * ds_upper[i]
-        dA += (-0.5*p_err_top[i]*np.sin(theta_upper)*ds_upper[i])**2 + (-0.5*p_err_top[i+1]*np.sin(theta_upper[i])*ds_upper[i])**2
+        a += -0.5 * (p_top[i] + p_top[i+1]) * np.sin(theta_upper[i]) * ds_upper[i]
+        da += (-0.5*p_err_top[i]*np.sin(theta_upper)*ds_upper[i])**2 + (-0.5*p_err_top[i+1]*np.sin(theta_upper[i])*ds_upper[i])**2
     
     for i in range(len(ds_lower)):
-        N += 0.5 * (p_bot[i] + p_bot[i+1]) * np.sin(theta_lower[i]) * ds_lower[i]
-        dA += (0.5*p_err_bot[i]*np.sin(theta_lower)*ds_lower[i])**2 + (0.5*p_err_bot[i+1]*np.sin(theta_lower[i])*ds_lower[i])**2
+        n += 0.5 * (p_bot[i] + p_bot[i+1]) * np.sin(theta_lower[i]) * ds_lower[i]
+        da += (0.5*p_err_bot[i]*np.sin(theta_lower)*ds_lower[i])**2 + (0.5*p_err_bot[i+1]*np.sin(theta_lower[i])*ds_lower[i])**2
     
     # Calculating error (position error assumed to be 0)
-    dN = np.sqrt(dN)
+    dn = np.sqrt(dn)
     
-    return A, dA
+    return a, da
 
-def LiftForce(alpha: float, dalpha: float, N: float, dN: float, A: float, dA: float):
+def LiftForce(alpha: float, dalpha: float, n: float, dn: float, a: float, da: float):
     '''
     Returns the Lift force for given normal and axial forces at given AoA.
 
@@ -107,26 +113,26 @@ def LiftForce(alpha: float, dalpha: float, N: float, dN: float, A: float, dA: fl
         angle of attack (degrees)
     dalpha : float
         angle of attack uncertainty (degrees)
-    N : float
+    n : float
         Normal force (Newtons)
-    dN : float
+    dn : float
         Normal force uncertainty (Newtons)
-    A : float
+    a : float
         Axial force (Newtons)
-    dA : float
+    da : float
         Axial force uncertainty (Newtons)
     Returns:
     --------
-    L: Lift Force
-    dL: Lift Force uncertainty
+    l: Lift Force
+    dl: Lift Force uncertainty
     '''
 
-    L = N * np.cos(np.deg2rad(alpha)) - A * np.sin(np.deg2rad(alpha))
-    dL =  np.sqrt((np.cos(np.deg2rad(alpha)) * dN)**2 + (np.sin(np.deg2rad(alpha)) * dA)**2 + ((-N*np.sin(np.deg2rad(alpha)) - A*np.cos(np.deg2rad(alpha)))*np.deg2rad(alpha))**2)
+    l = n * np.cos(np.deg2rad(alpha)) - a * np.sin(np.deg2rad(alpha))
+    dl =  np.sqrt((np.cos(np.deg2rad(alpha)) * dn)**2 + (np.sin(np.deg2rad(alpha)) * da)**2 + ((-n*np.sin(np.deg2rad(alpha)) - a*np.cos(np.deg2rad(alpha)))*np.deg2rad(alpha))**2)
 
-    return L, dL
+    return l, dl
 
-def PressureDragForce(alpha: float, dalpha: float, N: float, dN: float, A: float, dA: float):
+def PressureDragForce(alpha: float, dalpha: float, n: float, dn: float, a: float, da: float):
     '''
     Returns the Pressure drag force for given normal and axial forces at given AoA.
 
@@ -136,24 +142,24 @@ def PressureDragForce(alpha: float, dalpha: float, N: float, dN: float, A: float
         angle of attack (degrees)
     dalpha : float
         angle of attack uncertainty (degrees)
-    N : float
+    n : float
         Normal force (Newtons)
-    dN : float
+    dn : float
         Normal force uncertainty (Newtons)
-    A : float
+    a : float
         Axial force (Newtons)
-    dA : float
+    da : float
         Axial force uncertainty (Newtons)
     Returns:
     --------
-    Dp: Pressure Drag Force
-    dDp: Pressure Drag Force uncertainty
+    dp: Pressure Drag Force
+    ddp: Pressure Drag Force uncertainty
     '''
 
-    Dp = N * np.sin(np.deg2rad(alpha)) + A * np.cos(np.deg2rad(alpha))
-    dDp =  np.sqrt((np.sin(np.deg2rad(alpha)) * dN)**2 + (np.cos(np.deg2rad(alpha)) * dA)**2 + ((N*np.cos(np.deg2rad(alpha)) - A*np.sin(np.deg2rad(alpha)))*np.deg2rad(alpha))**2)
+    dp = n * np.sin(np.deg2rad(alpha)) + a * np.cos(np.deg2rad(alpha))
+    ddp =  np.sqrt((np.sin(np.deg2rad(alpha)) * dn)**2 + (np.cos(np.deg2rad(alpha)) * da)**2 + ((n*np.cos(np.deg2rad(alpha)) - a*np.sin(np.deg2rad(alpha)))*np.deg2rad(alpha))**2)
 
-    return Dp, dDp
+    return dp, ddp
 
 def MomentLE(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top: np.array, top_p_pos: np.array, bot_p_pos: np.array):
     '''
@@ -176,8 +182,8 @@ def MomentLE(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top: n
         bottom airfoil pressure tap positions [x; y]
     Returns:
     --------
-    M: Moment 
-    dM: Moment uncertainty
+    m: Moment 
+    dm: Moment uncertainty
     '''
     x_upper = top_p_pos[:, 0]
     x_lower = bot_p_pos[:, 0]
@@ -190,17 +196,54 @@ def MomentLE(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top: n
     ds_upper = np.sqrt(np.diff(x_upper)**2 + np.diff(y_upper)**2)
     ds_lower = np.sqrt(np.diff(x_lower)**2 + np.diff(y_lower)**2)   
 
-    for i in range(len(ds_upper)):
-        M += 0.5*(p_top[i] + p_top[i+1])*np.cos(theta_upper[i])*x_upper[i]*ds_upper[i]
-        M += -0.5*(p_top[i] + p_top[i+1])*np.sin(theta_upper[i])*y_upper[i]*ds_upper[i]
+    m = 0
+    dm = 0
 
-        dM += (0.5*np.cos(theta_upper[i])*x_upper[i]*ds_upper[i]-0.5*np.sin(theta_upper[i])*y_upper[i]*ds_upper[i])**2
+    for i in range(len(ds_upper)):
+        m += 0.5*(p_top[i] + p_top[i+1])*np.cos(theta_upper[i])*x_upper[i]*ds_upper[i]
+        m += -0.5*(p_top[i] + p_top[i+1])*np.sin(theta_upper[i])*y_upper[i]*ds_upper[i]
+
+        dm += (0.5*np.cos(theta_upper[i])*x_upper[i]*ds_upper[i]-0.5*np.sin(theta_upper[i])*y_upper[i]*ds_upper[i]*p_err_top[i])**2
 
     for i in range(len(ds_lower)):
-        M += 0.5*(p_bot[i] + p_bot[i+1])*np.cos(theta_lower[i])*x_lower[i]*ds_lower[i]
-        M += -0.5*(p_bot[i] + p_bot[i+1])*np.sin(theta_lower[i])*y_lower[i]*ds_lower[i]
+        m += 0.5*(p_bot[i] + p_bot[i+1])*np.cos(theta_lower[i])*x_lower[i]*ds_lower[i]
+        m += -0.5*(p_bot[i] + p_bot[i+1])*np.sin(theta_lower[i])*y_lower[i]*ds_lower[i]
 
-        dM += (0.5*np.cos(theta_lower[i])*x_lower[i]*ds_lower[i]-0.5*np.sin(theta_lower[i])*y_lower[i]*ds_lower[i])**2
+        dm += (0.5*np.cos(theta_lower[i])*x_lower[i]*ds_lower[i]-0.5*np.sin(theta_lower[i])*y_lower[i]*ds_lower[i]*p_err_bot[i])**2
     
-    dM = np.sqrt(dM)
-    return M, dM
+    dm = np.sqrt(dm)
+    return m, dm
+
+def TotalDrag(rho: float, y: np.array, v:np.array, v_err: np.array, u_inf: float, u_inf_err: float):
+    '''
+    Returns the total drag force as a result of momentum loss of air.
+
+    Parameters:
+    -----------   
+    rho : float
+        air density (kg/m^3)
+    y : np.array
+        y position of measurement points (m)
+    v : float
+        air velocity at measurement points (m/s)
+    v_err : float
+        air velocity uncertainty (m/s)
+    u_inf : float
+        free stream air velocity (m/s)
+    u_inf_err : float
+        free stream air velocity uncertainty (m/s)
+
+    Returns:
+    --------
+    dt: total drag
+    ddt: total drag uncertainty
+    '''
+    dt = 0
+    ddt = 0
+    delta_y = np.diff(y)
+    for i in range(len(y)-1):
+        dt += rho * 0.5 * ((v[i]*(u_inf-v[i]))+(v[i+1]*(u_inf-v[i+1])))*delta_y
+        ddt += (rho*0.5*delta_y*(u_inf-2*v[i])*v_err[i])**2 + (rho*0.5*delta_y*(v[i+1]+v[i])*u_inf_err[i])**2
+
+    ddt = np.sqrt(ddt)
+    return dt, ddt
