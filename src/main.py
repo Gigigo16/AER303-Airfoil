@@ -62,8 +62,8 @@ for i in alpha:
     p_r1 = (data['p_rake1']*gain + offset)*Hg2Pa
     p_r2 = (data['p_rake2']*gain + offset)*Hg2Pa
 
-    print((data['p_airfoil'][0]*gain + offset)*Hg2Pa)
-    print(p_top, p_bot)
+    #print((data['p_airfoil'][0]*gain + offset)*Hg2Pa)
+    #print(p_top, p_bot)
 
     p_r1_err = np.zeros_like(p_r1) #temp
     p_r2_err = np.zeros_like(p_r2) #temp
@@ -72,7 +72,7 @@ for i in alpha:
 
     # finding the wake velocity distribution:
     U_inf, U_inf_err, v_r1, v_r2, v_r1_err, v_r2_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err)
-    # print(U_inf, U_inf_err)
+    print(U_inf, U_inf_err)
     
     #finding the dynamic freestream pressure
     q_inf, q_inf_err = DynPressure(U_inf, U_inf_err)
@@ -82,16 +82,16 @@ for i in alpha:
     Cp_top, Cp_bot, Cp_top_err, Cp_bot_err = Cpressure(p_top, p_bot, p_top_err, p_bot_err, q_inf, q_inf_err)
     # print(Cp_top)
 
-    print(p_bot, Cp_bot, air_bot_tap_pos)
+    #print(p_bot, Cp_bot, air_bot_tap_pos)
 
     ##TEST:
     y = [0, 1.67, 3.33, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16.67, 18.33, 20]
-    # plt.plot(v_r1[0], y)
-    plt.plot(air_top_tap_pos, Cp_top)
-    plt.plot(air_bot_tap_pos, Cp_bot)
-    plt.gca().invert_yaxis()
-    plt.title(i)
-    plt.show()
+    #plt.plot(v_r1[0], y)
+    #plt.plot(air_top_tap_pos, Cp_top)
+    #plt.plot(air_bot_tap_pos, Cp_bot)
+    #plt.gca().invert_yaxis()
+    #plt.title(i)
+    #plt.show()
 
 
 
