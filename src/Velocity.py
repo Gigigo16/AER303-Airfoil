@@ -1,7 +1,6 @@
 import numpy as np
 
-def Velocity(p_r1: np.array, p_r2: np.array, p_r1_err: np.array, p_r2_err: np.array):
-    #, pos_r1: np.array, pos_r2: np.array
+def Velocity(p_r1: np.array, p_r2: np.array, p_r1_err: np.array, p_r2_err: np.array, pos_r1: np.array, pos_r2: np.array):
     '''
     Returns the Velocity Distribution over the rake and the free stream velocity.
 
@@ -24,10 +23,14 @@ def Velocity(p_r1: np.array, p_r2: np.array, p_r1_err: np.array, p_r2_err: np.ar
     --------    
     U_inf: Freestream Velocity
     U_inf_err: Freestream Velocity error
-    v_r1: velocity distribution in config 1
-    v_r2: velocity distribution in config 2
+    V_r: velocity distribution in combined config
+    V_r_err: velocity distribution error in combined config
     V_pos: y-axis positions of the velocities
     '''
+    rake_pos = np.array([0, 1.67, 3.33, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16.67, 18.33, 20])
+    pos_r1 = pos_r1 + rake_pos
+    pos_r2 = pos_r2 + rake_pos
+    V_pos = np.sort(np.concatenate((pos_r1, pos_r2)))
 
     rho = 1.225
 
@@ -43,10 +46,31 @@ def Velocity(p_r1: np.array, p_r2: np.array, p_r1_err: np.array, p_r2_err: np.ar
     # it was found that one port in the rake was outputting abnormally high. interpolating over it:
     k = 14 #index of bad port 
     v_r1[0][k] = 0.5*(v_r1[0][k+1] + v_r1[0][k-1])
+    v_r2[0][k] = 0.5*(v_r2[0][k+1] + v_r2[0][k-1])
 
     U_inf_err = 0.5*np.sqrt(np.sum(np.square([v_r1_err[0][1], v_r1_err[0][-2], v_r2_err[0][1], v_r2_err[0][-2]])))
+
+    V_r = []
+    V_r_err = []
     
-    return U_inf, U_inf_err, v_r1, v_r2, v_r1_err, v_r2_err
+    if pos_r1[0]<pos_r2[0]:
+        for i in range(len(V_pos)):
+            if i%2 == 0:
+                V_r.append(v_r1[0][int(i/2)])
+                V_r_err.append(v_r1_err[0][int(i/2)])
+            else:
+                V_r.append(v_r2[0][int((i-1)/2)])
+                V_r_err.append(v_r2_err[0][int((i-1)/2)])
+    else:
+        for i in range(len(V_pos)):
+            if i%2 == 0:
+                V_r.append(v_r2[0][int(i/2)])
+                V_r_err.append(v_r2_err[0][int(i/2)])
+            else:
+                V_r.append(v_r1[0][int((i-1)/2)])
+                V_r_err.append(v_r1_err[0][int((i-1)/2)])
+
+    return U_inf, U_inf_err, V_r, V_r_err, V_pos
 
 def DynPressure(U_inf: np.float64, U_inf_err: np.float64):
 

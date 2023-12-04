@@ -33,6 +33,10 @@ gain = 115 # From in lab calibration code
 offset = 50 # From in lab calibration code
 Hg2Pa = 9.80665 #inHg to Pa convertion factor
 
+# baselines of rake positions:
+y_0 = np.array([12, 11.5, 11.5, 11, 11, 11, 11.5, 11, 11.5, 12.5, 11.5, 12, 12.5, 12]) - 3.33 # inital position of the bottom port
+dir = [1, -1, -1, 1, -1, 1, 1, -1, 1, 1, 1, 1] #direction rake was moved -1 = down 1 = up
+
 # LOADING CLARK_Y_AIRFOIL COORDINATES
 ##############################
 with open(".\data\Clark_Y_Airfoil.csv", newline='') as f:
@@ -56,9 +60,9 @@ airfoil_bot = np.array(airfoil_bot)*0.1 # Multiplying values by cord length (val
 pressure_data = []
 # PROCESSING DATA
 ########################
-for i in alpha:
+for i,a in enumerate(alpha):
 
-    data = io.loadmat(".\data\Filtered\Experimental_data_%d.mat"%i)
+    data = io.loadmat(".\data\Filtered\Experimental_data_%d.mat"%a)
     # ['__header__', '__version__', '__globals__', 'AoA', 'ask', 'None', 
     # 'f_s', 'i', 'k', 'p_airfoil', 'p_rake1', 'p_rake2', 'prompt', 'spdata', 'sptime', 
     # 't_s', 'wpdata', 'wpdata2', 'wptime1', 'wptime2', 'x', 'y', 'y2', '__function_workspace__']
@@ -87,7 +91,13 @@ for i in alpha:
     p_bot_err = data[12:19]
 
     # finding the wake velocity distribution:
-    U_inf, U_inf_err, v_r1, v_r2, v_r1_err, v_r2_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err)
+    pos_r1 = y_0[i]
+    pos_r2 = y_0[i] + dir[i]*0.5
+    U_inf, U_inf_err, V_r, V_r_err, V_pos = Velocity(p_r1, p_r2, p_r1_err, p_r2_err, pos_r1, pos_r2)
+
+    plt.plot(V_r, V_pos)
+    plt.show()
+
     # print(U_inf, U_inf_err)
     
     #finding the dynamic freestream pressure
@@ -95,6 +105,6 @@ for i in alpha:
 
     #finding the Cp distribution over the airfoil
     Cp_top, Cp_bot, Cp_top_err, Cp_bot_err = Cpressure(p_top, p_bot, p_top_err, p_bot_err, q_inf, q_inf_err)
-    print((Cp_top_err))
+    # print((Cp_top_err))
 
 PressuretoCSV(alpha, np.array(pressure_data))
