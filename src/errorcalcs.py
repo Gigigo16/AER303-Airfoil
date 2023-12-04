@@ -45,8 +45,7 @@ for i, a in enumerate(alpha):
             dP_r1[i, k-1] = DataErr((data['wpdata'][k-1]*gain + offset)*Hg2Pa)
             dP_r2[i, k-1] = DataErr((data['wpdata2'][k-1]*gain + offset)*Hg2Pa)
 
-    if i == 0:
-        break
+# Saving data to CSV files
 
 np.savetxt("data\CSV\dP_airfoil.csv", dP_a, delimiter=",")
 np.savetxt("data\CSV\dP_rakepos1.csv", dP_r1, delimiter=",")
