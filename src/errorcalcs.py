@@ -24,7 +24,7 @@ offset = 50 # From in lab calibration code
 Hg2Pa = 9.80665 #inHg to Pa convertion factor
 
 # Angles of Attack
-alpha = [0, 4, 6, 8, 9, 10, 11, 12, 14, 15, 17]
+alpha = [0, 4, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17]
 
 dP_a = np.zeros((len(alpha), 19))
 dP_r1 = np.zeros((len(alpha), 17))
