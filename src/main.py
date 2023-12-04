@@ -106,7 +106,7 @@ for i in alpha:
     #print(p_bot, Cp_bot, air_bot_tap_pos)
 
     ##TEST:
-    y = [0, 1.67, 3.33, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16.67, 18.33, 20]
+    #y = [0, 1.67, 3.33, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16.67, 18.33, 20]
     #plt.plot(v_r1[0], y)
     #plt.plot(air_top_tap_pos, Cp_top)
     #plt.plot(air_bot_tap_pos, Cp_bot)
@@ -114,15 +114,7 @@ for i in alpha:
     #plt.title(i)
     #plt.show()
 
-print(pressure_data)
 PressuretoCSV(alpha, np.array(pressure_data))
-
-
-    
-
-
-
-
 
 ####################################################################
 # TOO BE REMOVED BEFORE SUBMISSION TEST ONLY
