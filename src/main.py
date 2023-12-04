@@ -94,14 +94,14 @@ for i,a in enumerate(alpha):
     p_r2_err = np.zeros_like(p_r2) #temp
     p_top_err = np.zeros_like(p_top) #temp
     p_bot_err = np.zeros_like(p_bot) #temp
+    
+    with open('data\CSV\dP_airfoil.csv') as f:
+        reader = csv.reader(f)
+        data_err_a = list(reader)
+        data_err_a = [eval(e) for e in data_err_a[i]]
+        p_top_err = data_err_a[0:12]
+        p_bot_err = data_err_a[12:19]
     if i == 0:
-        with open('data\CSV\dP_airfoil.csv') as f:
-            reader = csv.reader(f)
-            data_err_a = list(reader)
-            data_err_a = [eval(e) for e in data_err_a[i]]
-            p_top_err = data_err_a[0:12]
-            p_bot_err = data_err_a[12:19]
-
         with open('data\CSV\dP_rakepos1.csv') as f:
             reader = csv.reader(f)
             data_err_r1 = list(map(np.float64,reader))
