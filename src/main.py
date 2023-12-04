@@ -119,7 +119,7 @@ for i,a in enumerate(alpha):
     # finding the wake velocity distribution:
     pos_r1 = y_0[i]
     pos_r2 = y_0[i] + dir[i]*0.5
-    U_inf, U_inf_err, V_r, V_r_err, V_pos, v_r1, v_r2, pos_r1, pos_r2, P_comb, P_comb_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err, pos_r1, pos_r2)
+    U_inf, U_inf_err, V_r, V_r_err, V_pos, P_comb, P_comb_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err, pos_r1, pos_r2)
 
     rake_press.append(list(map(float, P_comb)))
     y_rake_pos.append(list(map(float, V_pos)))
