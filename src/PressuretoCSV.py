@@ -55,13 +55,14 @@ def RakePressuretoCSV(alpha: np.array, p_rake: np.array , y: np.array):
         array containing rake pressure data for each AoA where each row 
         is a different AoA and each column is a different port
     y : np.array (cm)
-        array containing rake port positions
+        array containing rake port positions with same structure as p_rake
     Returns
     -------
     0
     """
     for i in range(len(alpha)):
         df = pd.DataFrame(p_rake[i].T, 
-                          index=y, columns=["Position (cm)",'Pressure (Pa)'])
+                          index=y[i].T, columns=['Pressure (Pa)'])
+        df.index.name = 'y Position (cm)'
         
         df.to_csv('.\data\CSV\Rake_Pressure_AoA%d.csv'%alpha[i], index=True)

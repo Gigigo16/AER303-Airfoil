@@ -63,6 +63,8 @@ airfoil_bot = np.array(airfoil_bot)*0.1 # Multiplying values by cord length (val
 
 
 pressure_data = []
+rake_press = []
+y_rake_pos = []
 # PROCESSING DATA
 ########################
 for i,a in enumerate(alpha):
@@ -117,9 +119,15 @@ for i,a in enumerate(alpha):
     # finding the wake velocity distribution:
     pos_r1 = y_0[i]
     pos_r2 = y_0[i] + dir[i]*0.5
-    U_inf, U_inf_err, V_r, V_r_err, V_pos= Velocity(p_r1, p_r2, p_r1_err, p_r2_err, pos_r1, pos_r2)
+    U_inf, U_inf_err, V_r, V_r_err, V_pos, P_comb, P_comb_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err, pos_r1, pos_r2)
 
+<<<<<<< HEAD
     # VelGraph(a, V_r, V_r_err, V_pos)
+=======
+    rake_press.append(list(map(float, P_comb)))
+    y_rake_pos.append(list(map(float, V_pos)))
+    VelGraph(a, V_r, V_r_err, V_pos)
+>>>>>>> 3da4c627a4049a953b8a202c2457c47922eb625b
 
 
     
@@ -136,3 +144,4 @@ for i,a in enumerate(alpha):
 CoeffGraph(a, V_r, V_r_err, V_pos)
 
 PressuretoCSV(alpha, np.array(pressure_data))
+RakePressuretoCSV(alpha, np.array(rake_press), np.array(y_rake_pos))
