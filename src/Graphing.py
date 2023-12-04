@@ -83,7 +83,9 @@ def VelGraph(a: np.int32, V_r: np.array, V_r_err: np.array, V_pos: np.array):
     '''
 
     plt.errorbar(V_r, V_pos, xerr=V_r_err, color = 'c', marker = 'o')
-    plt.title('Wake velocity profile - AoA = ' + str(a) + u'\N{DEGREE SIGN}')
+    params = {'mathtext.default': 'regular' }          
+    plt.rcParams.update(params)
+    plt.title('Wake velocity profile: $α$ = ' + str(a) + u'\N{DEGREE SIGN}')
     plt.xlabel('velocity (m/s)')
     plt.ylabel('tap y-pos (cm)')
     plt.legend(['Experimental velocity'])
