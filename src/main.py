@@ -96,6 +96,8 @@ for i,a in enumerate(alpha):
     pos_r2 = y_0[i] + dir[i]*0.5
     U_inf, U_inf_err, V_r, V_r_err, V_pos, v_r1, v_r2, pos_r1, pos_r2 = Velocity(p_r1, p_r2, p_r1_err, p_r2_err, pos_r1, pos_r2)
 
+    VelGraph(a, V_r, V_r_err, V_pos)
+
     # plt.plot(V_r, V_pos)
     # # plt.plot(v_r1[0], pos_r1)
     # # plt.plot(v_r2[0], pos_r2)

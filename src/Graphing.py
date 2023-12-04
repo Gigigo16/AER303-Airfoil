@@ -9,13 +9,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import csv
 
-def CpGraph(a, Cp_top: np.array, Cp_bot: np.array, Cp_top_err: np.array, Cp_bot_err: np.array):
+def CpGraph(a: np.int32, Cp_top: np.array, Cp_bot: np.array, Cp_top_err: np.array, Cp_bot_err: np.array):
     '''
     PLots the Coefficient of pressure distribution.
 
     Parameters:
     -----------   
-    a : np.int
+    a : np.int32
         angle of attack
     p_top : np.array
         top airfoil pressure distribution
@@ -50,12 +50,39 @@ def CpGraph(a, Cp_top: np.array, Cp_bot: np.array, Cp_top_err: np.array, Cp_bot_
     plt.plot(xfoil_x, xfoil_cp, color = 'r')
     plt.errorbar(air_top_tap_pos, Cp_top, yerr=Cp_top_err, color = 'c', marker = 'o')
     plt.errorbar(air_bot_tap_pos, Cp_bot, yerr=Cp_bot_err, color = 'c', marker = 'o')
-    plt.title('$C_{P}$ vs x/c: AoA = ' + str(a) + u'\N{DEGREE SIGN}')
+    plt.title('$C_{P}$ vs x/c - AoA = ' + str(a) + u'\N{DEGREE SIGN}')
     plt.xlabel('x/c')
     plt.ylabel('$C_{P}$')
     plt.legend(['Theoretical XFoil Data', 'Experimental C_P'])
     plt.gca().invert_yaxis()
     plt.grid()
     plt.savefig('results\C_p-graphs\C_p-a%d.png'%a)
+    # plt.show()
+    plt.clf()
+
+def VelGraph(a: np.int32, V_r: np.array, V_r_err: np.array, V_pos: np.array):
+    '''
+    PLots the Coefficient of pressure distribution.
+
+    Parameters:
+    -----------   
+    a : np.int32
+        angle of attack
+    V_r : np.array
+        vel dist
+    V_r_err : np.array
+        error in vel dist
+    V_pos : np.array
+        tap positions
+    '''
+
+    plt.errorbar(V_r, V_pos, xerr=V_r_err, color = 'c', marker = 'o')
+    plt.title('Wake velocity profile - AoA = ' + str(a) + u'\N{DEGREE SIGN}')
+    plt.xlabel('velocity (m/s)')
+    plt.ylabel('tap y-pos (cm)')
+    plt.legend(['Experimental velocity'])
+    # plt.gca().invert_xaxis()
+    plt.grid()
+    plt.savefig('results\\vel-graphs\\vel-a%d.png'%a)
     # plt.show()
     plt.clf()
