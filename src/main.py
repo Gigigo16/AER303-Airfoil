@@ -15,6 +15,7 @@ from ReynoldsNumber import *
 from Forces import *
 from Velocity import *
 from Coefficients import *
+from PressuretoCSV import *
 
 
 # DEFINITIONS
@@ -47,6 +48,7 @@ airfoil_top = np.array(airfoil_top)*0.1  # Multiplying values by cord length (va
 airfoil_bot = np.array(airfoil_bot)*0.1 # Multiplying values by cord length (values given are per unit cord)
 
 
+pressure_data = []
 # PROCESSING DATA
 ########################
 for i in alpha:
@@ -61,7 +63,10 @@ for i in alpha:
     p_bot = (data['p_airfoil'][0][12:19]*gain + offset)*Hg2Pa
     p_r1 = (data['p_rake1']*gain + offset)*Hg2Pa
     p_r2 = (data['p_rake2']*gain + offset)*Hg2Pa
-
+    
+    p = (data['p_airfoil'][0]*gain + offset)*Hg2Pa
+    pressure_data.append(list(map(float, p)))
+    
     #print((data['p_airfoil'][0]*gain + offset)*Hg2Pa)
     #print(p_top, p_bot)
 
@@ -72,7 +77,7 @@ for i in alpha:
 
     # finding the wake velocity distribution:
     U_inf, U_inf_err, v_r1, v_r2, v_r1_err, v_r2_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err)
-    print(U_inf, U_inf_err)
+    #print(U_inf, U_inf_err)
     
     #finding the dynamic freestream pressure
     q_inf, q_inf_err = DynPressure(U_inf, U_inf_err)
@@ -93,6 +98,8 @@ for i in alpha:
     #plt.title(i)
     #plt.show()
 
+print(pressure_data)
+PressuretoCSV(alpha, np.array(pressure_data))
 
 
     
