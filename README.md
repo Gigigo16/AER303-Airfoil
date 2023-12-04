@@ -17,7 +17,7 @@ The file structure for this repository is structured as follows:
 
 The code in this respository has the following depedancies:
 
-- [Python 3.8+](https://www.python.org/) --> Version 3.11 recommended
+- [Python 3.8+](https://www.python.org/) -> Version 3.11 recommended
 - [Numpy](https://numpy.org/)
 - [Matplotlib](https://matplotlib.org/)
 - [Scipi](https://scipy.org/)
@@ -30,7 +30,9 @@ In order to replicate results seen in lab report the following steps must be tak
 1. **Run Data Filtering Script (filter.m)**
 2. **Run Uncertainty Calculations (errorcalc.py)**
    
-⋅⋅⋅[WARNING] -> May take over an hour to compute uncertainties for all 456 values (38 (# of ports) * 12 * (# of AoAs)) as each  point requires the calculation of a convolution accross 90,090 points and a numerical integration accross a large range of values leading to a very large runtime. It is not recommended to run this and instead utilize the values in "/data/CSV/dX_xx.csv" (which we have calculated). However, if desired, results can be verified by deleting the existing CSVs and running this script.
+    **[WARNING]** -> May take over an hour to compute uncertainties for all 456 values (38 (# of ports) * 12 * (# of AoAs)) as each  point requires the calculation of a convolution accross 90,090  points and a numerical integration accross a large range of values leading to a very large runtime. 
+It is not recommended to run this and instead utilize the values in "/data/CSV/dX_xx.csv" (which we have calculated). However, if desired, results can be verified by deleting the existing CSVs and running this script.
+ 
 4. **Run main processing script (main.py)**
 
 Results should now be present in results folder.
