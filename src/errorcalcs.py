@@ -48,7 +48,6 @@ for i, a in enumerate(alpha):
     if i == 0:
         break
 
-print(dP_a, dP_r1)
-np.savetxt("data\Filtered\dP_a.csv", dP_a, delimiter=",")
-np.savetxt("data\Filtered\dP_r1.csv", dP_r1, delimiter=",")
-np.savetxt("data\Filtered\dP_r2.csv", dP_r2, delimiter=",")
+np.savetxt("data\CSV\dP_airfoil.csv", dP_a, delimiter=",")
+np.savetxt("data\CSV\dP_rakepos1.csv", dP_r1, delimiter=",")
+np.savetxt("data\CSV\dP_rakepos2.csv", dP_r2, delimiter=",")
