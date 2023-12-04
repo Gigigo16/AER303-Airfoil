@@ -15,6 +15,7 @@ from ReynoldsNumber import *
 from Forces import *
 from Velocity import *
 from Coefficients import *
+from Uncertainty import *
 
 
 # DEFINITIONS
@@ -25,6 +26,11 @@ air_bot_tap_pos = [0.90, 0.60, 0.40, 0.30, 0.20, 0.10, 0.05]
 
 # Angles of Attack
 alpha = [0, 4, 6, 8, 9, 10, 11, 12, 14, 15, 17]
+
+# calibration data
+gain = 115 # From in lab calibration code
+offset = 50 # From in lab calibration code
+Hg2Pa = 9.80665 #inHg to Pa convertion factor
 
 # LOADING CLARK_Y_AIRFOIL COORDINATES
 ##############################
@@ -52,11 +58,11 @@ airfoil_bot = np.array(airfoil_bot)*0.1 # Multiplying values by cord length (val
 for i in alpha:
 
     data = io.loadmat(".\data\Filtered\Experimental_data_%d.mat"%i)
+    # ['__header__', '__version__', '__globals__', 'AoA', 'ask', 'None', 
+    # 'f_s', 'i', 'k', 'p_airfoil', 'p_rake1', 'p_rake2', 'prompt', 'spdata', 'sptime', 
+    # 't_s', 'wpdata', 'wpdata2', 'wptime1', 'wptime2', 'x', 'y', 'y2', '__function_workspace__']
 
     # data calibration:
-    gain = 115 # From in lab calibration code
-    offset = 50 # From in lab calibration code
-    Hg2Pa = 9.80665 #inHg to Pa convertion factor
     p_top = (data['p_airfoil'][0][0:12]*gain + offset)*Hg2Pa
     p_bot = (data['p_airfoil'][0][12:19]*gain + offset)*Hg2Pa
     p_r1 = (data['p_rake1']*gain + offset)*Hg2Pa
