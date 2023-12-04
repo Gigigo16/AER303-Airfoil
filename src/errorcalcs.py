@@ -24,13 +24,16 @@ offset = 50 # From in lab calibration code
 Hg2Pa = 9.80665 #inHg to Pa convertion factor
 
 # Angles of Attack
-alpha = [0, 4, 6, 8, 9, 10, 11, 12, 14, 15, 17]
+alpha = [0, 4, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17]
 
 dP_a = np.zeros((len(alpha), 19))
 dP_r1 = np.zeros((len(alpha), 17))
 dP_r2 = np.zeros((len(alpha), 17))
 
 for i, a in enumerate(alpha):
+
+    a = 13
+    i = 8
 
     data = io.loadmat(".\data\Filtered\Experimental_data_%d.mat"%a)
     # ['__header__', '__version__', '__globals__', 'AoA', 'ask', 'None', 
@@ -44,7 +47,12 @@ for i, a in enumerate(alpha):
         if (k < 18):
             dP_r1[i, k-1] = DataErr((data['wpdata'][k-1]*gain + offset)*Hg2Pa)
             dP_r2[i, k-1] = DataErr((data['wpdata2'][k-1]*gain + offset)*Hg2Pa)
+    
+    print(dP_a)
+    print(dP_r1)
+    print(dP_r2)
 
+    exit()
 # Saving data to CSV files
 
 np.savetxt("data\CSV\dP_airfoil.csv", dP_a, delimiter=",")

@@ -70,7 +70,7 @@ def Velocity(p_r1: np.array, p_r2: np.array, p_r1_err: np.array, p_r2_err: np.ar
                 V_r.append(v_r1[0][int((i-1)/2)])
                 V_r_err.append(v_r1_err[0][int((i-1)/2)])
 
-    return U_inf, U_inf_err, V_r, V_r_err, V_pos, v_r1, v_r2, pos_r1, pos_r2
+    return U_inf, U_inf_err, V_r, V_r_err, V_pos
 
 def DynPressure(U_inf: np.float64, U_inf_err: np.float64):
 
