@@ -41,9 +41,11 @@ def DataErr(raw_p: np.array):
 
     #finding the integral time scale:
     dt = 1/30000
-    T = sum(Bxx[:lim]) * dt
+    T = sum(Bxx[:lim]* dt)
     N = len(raw_p)/(2*T) * dt
     std = np.std(raw_p)
     dP = 1.96*std/np.sqrt(N)
+
+    print(dP)
 
     return dP

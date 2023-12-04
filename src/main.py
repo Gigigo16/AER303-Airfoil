@@ -82,13 +82,13 @@ for i in alpha:
         reader = csv.reader(f)
         data = list(reader)
         data = [eval(e) for e in data[0]]
-        print(len(data))
+        # print(len(data))
     p_top_err = data[0:12]
     p_bot_err = data[12:19]
 
     # finding the wake velocity distribution:
     U_inf, U_inf_err, v_r1, v_r2, v_r1_err, v_r2_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err)
-    print(U_inf, U_inf_err)
+    # print(U_inf, U_inf_err)
     
     #finding the dynamic freestream pressure
     q_inf, q_inf_err = DynPressure(U_inf, U_inf_err)
