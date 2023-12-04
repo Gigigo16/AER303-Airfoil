@@ -111,7 +111,6 @@ for i,a in enumerate(alpha):
     Cp_top, Cp_bot, Cp_top_err, Cp_bot_err = Cpressure(p_top, p_bot, p_top_err, p_bot_err, q_inf, q_inf_err)
     # print((Cp_top_err))
 
-
     #CP PLOTTING TEMP:
     if a != 9:
         CpGraph(a, Cp_top, Cp_bot, Cp_top_err, Cp_bot_err)
