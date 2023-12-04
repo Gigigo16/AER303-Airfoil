@@ -47,10 +47,11 @@ def CpGraph(a, Cp_top: np.array, Cp_bot: np.array, Cp_top_err: np.array, Cp_bot_
     Cp_top_err = Cp_top_err/30
     Cp_bot_err = Cp_bot_err/30
 
-    plt.gca().invert_yaxis()
     plt.plot(xfoil_x, xfoil_cp, color = 'r')
     plt.errorbar(air_top_tap_pos, Cp_top, yerr=Cp_top_err, color = 'c', marker = 'o')
     plt.errorbar(air_bot_tap_pos, Cp_bot, yerr=Cp_bot_err, color = 'c', marker = 'o')
     plt.title(a)
     plt.legend(['Theoretical XFoil Data', 'Experimental C_P'])
+    plt.gca().invert_yaxis()
+    plt.grid()
     plt.show()

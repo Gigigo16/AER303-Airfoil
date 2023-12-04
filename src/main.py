@@ -83,7 +83,7 @@ for i,a in enumerate(alpha):
     p_top_err = np.zeros_like(p_top) #temp
     p_bot_err = np.zeros_like(p_bot) #temp
 
-    with open('data\CSV\dP_a.csv') as f:
+    with open('data\CSV\dP_airfoil.csv') as f:
         reader = csv.reader(f)
         data = list(reader)
         data = [eval(e) for e in data[0]]
@@ -112,8 +112,7 @@ for i,a in enumerate(alpha):
     # print((Cp_top_err))
 
     #CP PLOTTING TEMP:
-    if a != 9:
-        CpGraph(a, Cp_top, Cp_bot, Cp_top_err, Cp_bot_err)
+    CpGraph(a, Cp_top, Cp_bot, Cp_top_err, Cp_bot_err)
 
     
 
