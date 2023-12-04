@@ -76,9 +76,17 @@ for i in alpha:
     p_top_err = np.zeros_like(p_top) #temp
     p_bot_err = np.zeros_like(p_bot) #temp
 
+    with open('data\Filtered\dP_a.csv') as f:
+        reader = csv.reader(f)
+        data = list(reader)
+        data = [eval(e) for e in data[0]]
+        print(len(data))
+    p_top_err = data[0:12]
+    p_bot_err = data[12:19]
+
     # finding the wake velocity distribution:
     U_inf, U_inf_err, v_r1, v_r2, v_r1_err, v_r2_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err)
-    print(U_inf, U_inf_err)
+    # print(U_inf, U_inf_err)
     
     #finding the dynamic freestream pressure
     q_inf, q_inf_err = DynPressure(U_inf, U_inf_err)
@@ -86,6 +94,8 @@ for i in alpha:
 
     #finding the Cp distribution over the airfoil
     Cp_top, Cp_bot, Cp_top_err, Cp_bot_err = Cpressure(p_top, p_bot, p_top_err, p_bot_err, q_inf, q_inf_err)
+    print((Cp_top_err))
+    exit()
     # print(Cp_top)
 
     #print(p_bot, Cp_bot, air_bot_tap_pos)

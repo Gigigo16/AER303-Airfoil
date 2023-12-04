@@ -44,10 +44,11 @@ for i, a in enumerate(alpha):
         if (k < 18):
             dP_r1[i, k-1] = DataErr((data['wpdata'][k-1]*gain + offset)*Hg2Pa)
             dP_r2[i, k-1] = DataErr((data['wpdata2'][k-1]*gain + offset)*Hg2Pa)
-    if (i == 1):
+
+    if i == 0:
         break
 
-
+print(dP_a, dP_r1)
 np.savetxt("data\Filtered\dP_a.csv", dP_a, delimiter=",")
 np.savetxt("data\Filtered\dP_r1.csv", dP_r1, delimiter=",")
 np.savetxt("data\Filtered\dP_r2.csv", dP_r2, delimiter=",")

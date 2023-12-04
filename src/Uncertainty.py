@@ -24,7 +24,7 @@ def DataErr(raw_p: np.array):
 
     Returns:
     --------    
-    dp: uncertainty in measurements for input series
+    dP: uncertainty in measurements for input series
     '''
 
     mu = raw_p.mean()
@@ -46,4 +46,4 @@ def DataErr(raw_p: np.array):
     std = np.std(raw_p)
     dP = 1.96*std/np.sqrt(N)
 
-    print(dP)
+    return dP
