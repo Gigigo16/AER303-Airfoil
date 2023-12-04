@@ -133,7 +133,7 @@ for i,a in enumerate(alpha):
 
     CpGraph(a, Cp_top, Cp_bot, Cp_top_err, Cp_bot_err)
 
-    
+CoeffGraph(a, V_r, V_r_err, V_pos)
 
 PressuretoCSV(alpha, np.array(pressure_data))
 RakePressuretoCSV(alpha, np.array(rake_press), np.array(y_rake_pos))
