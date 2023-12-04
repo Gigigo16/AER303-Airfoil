@@ -61,6 +61,7 @@ def Velocity(p_r1: np.array, p_r2: np.array, p_r1_err: np.array, p_r2_err: np.ar
         for i in range(len(V_pos)):
             if i%2 == 0:
                 P_combined.append(p_r1[0][int(i/2)])
+                print(p_r1_err)
                 P_combined_err.append(p_r1_err[0][int(i/2)])
                 V_r.append(v_r1[0][int(i/2)])
                 V_r_err.append(v_r1_err[0][int(i/2)])
