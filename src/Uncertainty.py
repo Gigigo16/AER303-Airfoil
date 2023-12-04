@@ -1,7 +1,7 @@
 """
 Functions related to finding the autocorrelation 
     and resultant uncertainties in the measured data
-    {Depenancies}: scipy, matplotlib, numpy
+    {Depenancies}: scipy, matplotlib, numpy, pandas
 """
 # IMPORTS
 #####################
@@ -38,14 +38,12 @@ def DataErr(raw_p: np.array):
      
     #find index of first root:
     lim = np.where(Bxx < 0)[0][0]
-
     #finding the integral time scale:
     dt = 1/30000
-    T = sum(Bxx[:lim]* dt)
+    T = np.trapz(Bxx[:lim], dx=dt) 
+    #T = sum(Bxx[:lim]) * dt
     N = len(raw_p)/(2*T) * dt
     std = np.std(raw_p)
     dP = 1.96*std/np.sqrt(N)
-
     print(dP)
-
     return dP
