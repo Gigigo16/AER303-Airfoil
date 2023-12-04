@@ -39,7 +39,7 @@ def PressuretoCSV(alpha: np.array, p: np.array):
                                  'Port 18',
                                  'Port 19'], columns=['Pressure (Pa)'])
         
-        df.to_csv('.\data\CSV\Pressure_AoA%d.csv'%i, index=True)
+        df.to_csv('.\data\CSV\Pressure_AoA%d.csv'%alpha[i], index=True)
     return 0
 def RakePressuretoCSV(alpha: np.array, p_rake: np.array):
     print("eee")

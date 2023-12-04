@@ -26,7 +26,7 @@ air_top_tap_pos = [0, 0.03, 0.06, 0.10, 0.15, 0.20, 0.30, 0.40, 0.55, 0.70, 0.85
 air_bot_tap_pos = [0.90, 0.60, 0.40, 0.30, 0.20, 0.10, 0.05]
 
 # Angles of Attack
-alpha = [0, 4, 6, 8, 9, 10, 11, 12, 14, 15, 17]
+alpha = [0, 4, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17]
 
 # calibration data
 gain = 115 # From in lab calibration code
