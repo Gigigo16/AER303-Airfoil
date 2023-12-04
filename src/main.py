@@ -82,7 +82,7 @@ for i,a in enumerate(alpha):
     p_top_err = np.zeros_like(p_top) #temp
     p_bot_err = np.zeros_like(p_bot) #temp
 
-    with open('data\Filtered\dP_a.csv') as f:
+    with open('data\CSV\dP_a.csv') as f:
         reader = csv.reader(f)
         data = list(reader)
         data = [eval(e) for e in data[0]]
@@ -95,11 +95,11 @@ for i,a in enumerate(alpha):
     pos_r2 = y_0[i] + dir[i]*0.5
     U_inf, U_inf_err, V_r, V_r_err, V_pos, v_r1, v_r2, pos_r1, pos_r2 = Velocity(p_r1, p_r2, p_r1_err, p_r2_err, pos_r1, pos_r2)
 
-    plt.plot(V_r, V_pos)
-    # plt.plot(v_r1[0], pos_r1)
-    # plt.plot(v_r2[0], pos_r2)
-    plt.title(i)
-    plt.show()
+    # plt.plot(V_r, V_pos)
+    # # plt.plot(v_r1[0], pos_r1)
+    # # plt.plot(v_r2[0], pos_r2)
+    # plt.title(i)
+    # plt.show()
 
     # print(U_inf, U_inf_err)
     
@@ -109,5 +109,33 @@ for i,a in enumerate(alpha):
     #finding the Cp distribution over the airfoil
     Cp_top, Cp_bot, Cp_top_err, Cp_bot_err = Cpressure(p_top, p_bot, p_top_err, p_bot_err, q_inf, q_inf_err)
     # print((Cp_top_err))
+
+
+    #CP PLOTTING TEMP:
+    
+    if a != 9:
+        Xfoil_parsed = []
+        with open("data\XFOIL\\a%d.txt"%a) as X:
+            data = (X.read())
+            data = data.replace('-', ' -').split('\n')[3:]
+            for i in data:
+                Xfoil_parsed.append(i.strip().split('  '))
+        
+        xfoil_x = []
+        xfoil_cp = []
+
+        for line in Xfoil_parsed[:-1]:
+            xfoil_x.append(float(line[0]))
+            xfoil_cp.append(float(line[2]))
+
+        Cp_top_err = Cp_top_err/30
+        Cp_bot_err = Cp_bot_err/30
+
+        plt.gca().invert_yaxis()
+        plt.plot(xfoil_x, xfoil_cp)
+        plt.errorbar(air_top_tap_pos, Cp_top, yerr=Cp_top_err)
+        plt.errorbar(air_bot_tap_pos, Cp_bot, yerr=Cp_bot_err)
+        plt.title(a)
+        plt.show()
 
 PressuretoCSV(alpha, np.array(pressure_data))

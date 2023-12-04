@@ -33,6 +33,9 @@ def Cpressure(p_top: np.array, p_bot: np.array, p_top_err: np.array, p_bot_err: 
     Cp_top_err = Cp_top * (np.sqrt((np.square((p_top_err/p_top)) + np.square((q_inf_err/q_inf)))))
     Cp_bot_err = Cp_bot * (np.sqrt((np.square((p_bot_err/p_bot)) + np.square((q_inf_err/q_inf)))))
 
+    Cp_top_err = abs(Cp_top_err)
+    Cp_bot_err = abs(Cp_bot_err)
+
     # it was found that one port in the airfoil was outputting abnormally high. interpolating over it:
     k = 5 #index of bad port 
     Cp_top[k] = 0.5*(Cp_top[k+1] + Cp_top[k-1])
