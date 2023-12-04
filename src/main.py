@@ -121,13 +121,9 @@ for i,a in enumerate(alpha):
     pos_r2 = y_0[i] + dir[i]*0.5
     U_inf, U_inf_err, V_r, V_r_err, V_pos, P_comb, P_comb_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err, pos_r1, pos_r2)
 
-<<<<<<< HEAD
-    # VelGraph(a, V_r, V_r_err, V_pos)
-=======
     rake_press.append(list(map(float, P_comb)))
     y_rake_pos.append(list(map(float, V_pos)))
     VelGraph(a, V_r, V_r_err, V_pos)
->>>>>>> 3da4c627a4049a953b8a202c2457c47922eb625b
 
 
     
@@ -139,7 +135,7 @@ for i,a in enumerate(alpha):
     #finding the Cp distribution over the airfoil
     Cp_top, Cp_bot, Cp_top_err, Cp_bot_err = Cpressure(p_top, p_bot, p_top_err, p_bot_err, q_inf, q_inf_err)
 
-    # CpGraph(a, Cp_top, Cp_bot, Cp_top_err, Cp_bot_err)
+    CpGraph(a, Cp_top, Cp_bot, Cp_top_err, Cp_bot_err)
 
 CoeffGraph(a, V_r, V_r_err, V_pos)
 
