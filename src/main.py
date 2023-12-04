@@ -61,7 +61,6 @@ airfoil_top = np.array(airfoil_top)*0.1  # Multiplying values by cord length (va
 airfoil_bot = np.array(airfoil_bot)*0.1 # Multiplying values by cord length (values given are per unit cord)
 
 
-
 pressure_data = []
 rake_press = []
 y_rake_pos = []

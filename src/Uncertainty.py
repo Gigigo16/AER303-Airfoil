@@ -10,6 +10,7 @@ from scipy import io
 import matplotlib.pyplot as plt
 import numpy as np
 import csv
+import statsmodels.api as sm
 
 
 def DataErr(raw_p: np.array):
@@ -27,17 +28,23 @@ def DataErr(raw_p: np.array):
     dP: uncertainty in measurements for input series
     '''
 
-    mu = raw_p.mean()
-    var = np.var(raw_p)
-    x = raw_p - mu
-
+    # METHOD 1
+    # mu = raw_p.mean()
+    # var = np.var(raw_p)
+    # x = raw_p - mu
     # we use the correlate function to determine self correlation for xp
     # it is subsequently normalized
     # first half is also truncated since it is symmetric
-    Bxx = np.correlate(x, x, mode='full')[len(raw_p)-1:]/var/len(raw_p)
+    # Bxx = np.correlate(x, x, mode='full')[len(raw_p)-1:]/var/len(raw_p)
+
+    # METHOD 2
+    #calculate autocorrelations:
+    Bxx = sm.tsa.acf(raw_p, nlags=30000) #we know the crossing is before 30000
+    # determined by now depricated code
      
     #find index of first root:
     lim = np.where(Bxx < 0)[0][0]
+
     #finding the integral time scale:
     dt = 1/30000
     T = np.trapz(Bxx[:lim], dx=dt) 
