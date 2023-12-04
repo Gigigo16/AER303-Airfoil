@@ -13,3 +13,6 @@ def PressuretoCSV(alpha: np.array, p: np.array):
     
     array = np.array(array)
     np.savetxt("./data/CSV/Pressure.csv", array, delimiter=';', fmt='%.18e')
+
+def RakePressuretoCSV(alpha: np.array, p_rake: np.array):
+    print("eee")
