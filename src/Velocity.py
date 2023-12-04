@@ -26,6 +26,8 @@ def Velocity(p_r1: np.array, p_r2: np.array, p_r1_err: np.array, p_r2_err: np.ar
     V_r: velocity distribution in combined config
     V_r_err: velocity distribution error in combined config
     V_pos: y-axis positions of the velocities
+    P_combined: combined pressure distribution
+    P_combined_err: combined pressure distribution error
     '''
     rake_pos = np.array([0, 1.67, 3.33, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16.67, 18.33, 20])
     pos_r1 = pos_r1 + rake_pos
@@ -51,26 +53,36 @@ def Velocity(p_r1: np.array, p_r2: np.array, p_r1_err: np.array, p_r2_err: np.ar
     U_inf_err = 0.5*np.sqrt(np.sum(np.square([v_r1_err[0][1], v_r1_err[0][-2], v_r2_err[0][1], v_r2_err[0][-2]])))
 
     V_r = []
+    P_combined = []
+    P_combined_err = []
     V_r_err = []
     
     if pos_r1[0]<pos_r2[0]:
         for i in range(len(V_pos)):
             if i%2 == 0:
+                P_combined.append(p_r1[0][int(i/2)])
+                P_combined_err.append(p_r1_err[0][int(i/2)])
                 V_r.append(v_r1[0][int(i/2)])
                 V_r_err.append(v_r1_err[0][int(i/2)])
             else:
                 V_r.append(v_r2[0][int((i-1)/2)])
+                P_combined.append(p_r2[0][int((i-1)/2)])
+                P_combined_err.append(p_r2_err[0][int((i-1)/2)])
                 V_r_err.append(v_r2_err[0][int((i-1)/2)])
     else:
         for i in range(len(V_pos)):
             if i%2 == 0:
                 V_r.append(v_r2[0][int(i/2)])
+                P_combined.append(p_r2[0][int(i/2)])
+                P_combined_err.append(p_r2_err[0][int(i/2)])
                 V_r_err.append(v_r2_err[0][int(i/2)])
             else:
                 V_r.append(v_r1[0][int((i-1)/2)])
+                P_combined.append(p_r1[0][int((i-1)/2)])
+                P_combined_err.append(p_r1_err[0][int((i-1)/2)])
                 V_r_err.append(v_r1_err[0][int((i-1)/2)])
 
-    return U_inf, U_inf_err, V_r, V_r_err, V_pos, v_r1, v_r2, pos_r1, pos_r2
+    return U_inf, U_inf_err, V_r, V_r_err, V_pos, v_r1, v_r2, pos_r1, pos_r2, P_combined, P_combined_err
 
 def DynPressure(U_inf: np.float64, U_inf_err: np.float64):
 
