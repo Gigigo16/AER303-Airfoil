@@ -56,7 +56,7 @@ def CpGraph(a, Cp_top: np.array, Cp_bot: np.array, Cp_top_err: np.array, Cp_bot_
     plt.errorbar(air_bot_tap_pos, Cp_bot, yerr=Cp_bot_err, color = 'c', marker = 'o')
     params = {'mathtext.default': 'regular' }          
     plt.rcParams.update(params)
-    plt.title('$C_{P}$ vs x/c: AoA = ' + str(a) + u'\N{DEGREE SIGN}')
+    plt.title('$C_{P}$ vs x/c: $α$ = ' + str(a) + u'\N{DEGREE SIGN}')
     plt.xlabel('x/c')
     plt.ylabel('$C_{P}$')
     plt.legend(['Theoretical XFoil Data', 'Experimental $C_{P}$'])
