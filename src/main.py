@@ -110,7 +110,6 @@ for i,a in enumerate(alpha):
     Cp_top, Cp_bot, Cp_top_err, Cp_bot_err = Cpressure(p_top, p_bot, p_top_err, p_bot_err, q_inf, q_inf_err)
     # print((Cp_top_err))
 
-
     #CP PLOTTING TEMP:
     Xfoil_parsed = []
     with open("data\XFOIL\\a%d.txt"%a) as X:
@@ -135,5 +134,6 @@ for i,a in enumerate(alpha):
     plt.errorbar(air_bot_tap_pos, Cp_bot, yerr=Cp_bot_err)
     plt.title(a)
     plt.show()
+
 
 PressuretoCSV(alpha, np.array(pressure_data))
