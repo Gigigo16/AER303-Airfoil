@@ -59,7 +59,7 @@ def CpGraph(a, Cp_top: np.array, Cp_bot: np.array, Cp_top_err: np.array, Cp_bot_
     plt.title('$C_{P}$ vs x/c: AoA = ' + str(a) + u'\N{DEGREE SIGN}')
     plt.xlabel('x/c')
     plt.ylabel('$C_{P}$')
-    plt.legend(['Theoretical XFoil Data', 'Experimental C_P'])
+    plt.legend(['Theoretical XFoil Data', 'Experimental $C_{P}$'])
     plt.gca().invert_yaxis()
     plt.grid()
     plt.savefig('results\C_p-graphs\C_p-a%d.png'%a)
