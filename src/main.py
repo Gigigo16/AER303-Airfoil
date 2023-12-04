@@ -17,6 +17,7 @@ from Velocity import *
 from Coefficients import *
 from PressuretoCSV import *
 from Uncertainty import *
+from Graphing import *
 
 
 # DEFINITIONS
@@ -112,30 +113,9 @@ for i,a in enumerate(alpha):
 
 
     #CP PLOTTING TEMP:
-    
     if a != 9:
-        Xfoil_parsed = []
-        with open("data\XFOIL\\a%d.txt"%a) as X:
-            data = (X.read())
-            data = data.replace('-', ' -').split('\n')[3:]
-            for i in data:
-                Xfoil_parsed.append(i.strip().split('  '))
-        
-        xfoil_x = []
-        xfoil_cp = []
+        CpGraph(a, Cp_top, Cp_bot, Cp_top_err, Cp_bot_err)
 
-        for line in Xfoil_parsed[:-1]:
-            xfoil_x.append(float(line[0]))
-            xfoil_cp.append(float(line[2]))
-
-        Cp_top_err = Cp_top_err/30
-        Cp_bot_err = Cp_bot_err/30
-
-        plt.gca().invert_yaxis()
-        plt.plot(xfoil_x, xfoil_cp)
-        plt.errorbar(air_top_tap_pos, Cp_top, yerr=Cp_top_err)
-        plt.errorbar(air_bot_tap_pos, Cp_bot, yerr=Cp_bot_err)
-        plt.title(a)
-        plt.show()
+    
 
 PressuretoCSV(alpha, np.array(pressure_data))
