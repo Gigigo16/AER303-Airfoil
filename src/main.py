@@ -96,6 +96,5 @@ for i in alpha:
     #finding the Cp distribution over the airfoil
     Cp_top, Cp_bot, Cp_top_err, Cp_bot_err = Cpressure(p_top, p_bot, p_top_err, p_bot_err, q_inf, q_inf_err)
     print((Cp_top_err))
-    exit()
 
 PressuretoCSV(alpha, np.array(pressure_data))

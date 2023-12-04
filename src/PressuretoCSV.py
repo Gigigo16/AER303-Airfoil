@@ -1,7 +1,7 @@
 import numpy as np
 
 def PressuretoCSV(alpha: np.array, p: np.array):
-    array = [[9999]]
+    array = [[1]]
     for i in range(0,19):
         array[0].append(np.float32(i+1))
     

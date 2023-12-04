@@ -21,6 +21,7 @@ The code in this respository has the following depedancies:
 - [Numpy](https://numpy.org/)
 - [Matplotlib](https://matplotlib.org/)
 - [Scipi](https://scipy.org/)
+- [Pandas](https://pandas.pydata.org/)
 
 ## How to Replicate Results:
 
