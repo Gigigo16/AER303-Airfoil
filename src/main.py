@@ -119,7 +119,7 @@ for i,a in enumerate(alpha):
     pos_r2 = y_0[i] + dir[i]*0.5
     U_inf, U_inf_err, V_r, V_r_err, V_pos= Velocity(p_r1, p_r2, p_r1_err, p_r2_err, pos_r1, pos_r2)
 
-    VelGraph(a, V_r, V_r_err, V_pos)
+    # VelGraph(a, V_r, V_r_err, V_pos)
 
 
     
@@ -131,8 +131,8 @@ for i,a in enumerate(alpha):
     #finding the Cp distribution over the airfoil
     Cp_top, Cp_bot, Cp_top_err, Cp_bot_err = Cpressure(p_top, p_bot, p_top_err, p_bot_err, q_inf, q_inf_err)
 
-    CpGraph(a, Cp_top, Cp_bot, Cp_top_err, Cp_bot_err)
+    # CpGraph(a, Cp_top, Cp_bot, Cp_top_err, Cp_bot_err)
 
-    
+CoeffGraph(a, V_r, V_r_err, V_pos)
 
 PressuretoCSV(alpha, np.array(pressure_data))
