@@ -34,8 +34,8 @@ offset = 50 # From in lab calibration code
 Hg2Pa = 9.80665 #inHg to Pa convertion factor
 
 # baselines of rake positions:
-y_0 = np.array([12, 11.5, 11.5, 11, 11, 11, 11.5, 11, 11.5, 12.4, 11.5, 12, 12.4, 12]) - 3.33 # inital position of the bottom port
-dir = [1, -1, -1, 1, -1, 1, 1, -1, -1, 1, -1, 1] #direction rake was moved -1 = down 1 = up
+y_0 = np.array([12, 12, 11.5, 11, 11.5, 11, 11.5, 12.5, 11.5, 12, 12.4, 12]) - 3.33 # inital position of the bottom port
+dir = [1, -1, -1, 1, -1, 1, 1, -1, -2, 1, -1, 1] #direction rake was moved -1 = down 1 = up
 
 # LOADING CLARK_Y_AIRFOIL COORDINATES
 ##############################
@@ -93,12 +93,13 @@ for i,a in enumerate(alpha):
     # finding the wake velocity distribution:
     pos_r1 = y_0[i]
     pos_r2 = y_0[i] + dir[i]*0.5
-    U_inf, U_inf_err, V_r, V_r_err, V_pos = Velocity(p_r1, p_r2, p_r1_err, p_r2_err, pos_r1, pos_r2)
+    U_inf, U_inf_err, V_r, V_r_err, V_pos, v_r1, v_r2, pos_r1, pos_r2 = Velocity(p_r1, p_r2, p_r1_err, p_r2_err, pos_r1, pos_r2)
 
-    if i>7:
-        plt.plot(V_r, V_pos)
-        plt.title(i)
-        plt.show()
+    plt.plot(V_r, V_pos)
+    # plt.plot(v_r1[0], pos_r1)
+    # plt.plot(v_r2[0], pos_r2)
+    plt.title(i)
+    plt.show()
 
     # print(U_inf, U_inf_err)
     
