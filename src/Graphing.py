@@ -47,13 +47,19 @@ def CpGraph(a: np.int32, Cp_top: np.array, Cp_bot: np.array, Cp_top_err: np.arra
     Cp_top_err = Cp_top_err/30
     Cp_bot_err = Cp_bot_err/30
 
+    plt.rcParams['mathtext.fontset'] = 'stix'
+    plt.rcParams['font.family'] = 'STIXGeneral'
+    plt.rcParams.update({'font.size': 12})
+
     plt.plot(xfoil_x, xfoil_cp, color = 'r')
     plt.errorbar(air_top_tap_pos, Cp_top, yerr=Cp_top_err, color = 'c', marker = 'o')
     plt.errorbar(air_bot_tap_pos, Cp_bot, yerr=Cp_bot_err, color = 'c', marker = 'o')
-    plt.title('$C_{P}$ vs x/c - AoA = ' + str(a) + u'\N{DEGREE SIGN}')
+    params = {'mathtext.default': 'regular' }          
+    plt.rcParams.update(params)
+    plt.title('$C_{P}$ vs x/c: $α$ = ' + str(a) + u'\N{DEGREE SIGN}')
     plt.xlabel('x/c')
     plt.ylabel('$C_{P}$')
-    plt.legend(['Theoretical XFoil Data', 'Experimental C_P'])
+    plt.legend(['Theoretical XFoil Data', 'Experimental $C_{P}$'])
     plt.gca().invert_yaxis()
     plt.grid()
     plt.savefig('results\C_p-graphs\C_p-a%d.png'%a)
