@@ -56,8 +56,6 @@ def Velocity(p_r1: np.array, p_r2: np.array, p_r1_err: np.array, p_r2_err: np.ar
     P_combined = []
     P_combined_err = []
     V_r_err = []
-
-    print(p_r1_err)
     
     if pos_r1[0]<pos_r2[0]:
         for i in range(len(V_pos)):
