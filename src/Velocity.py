@@ -102,7 +102,7 @@ def DynPressure(U_inf: np.float64, U_inf_err: np.float64):
     q_inf_err: Dynamic Pressure error
     '''
 
-    rho = 1.225
+    rho = 1.293# 1.225 
 
     q_inf = 0.5*rho*(U_inf**2)
 

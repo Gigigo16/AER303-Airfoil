@@ -67,8 +67,7 @@ for i in range(0,len(data)):
     elif not is_top and float(data[i][0]) in air_bot_tap_pos:
         airfoil_bot.append([float(data[i][0]), float(data[i][1])])
 
-print(len(airfoil_top))
-print(len(airfoil_bot))
+
 # Convert to np.array
 airfoil_top = np.array(airfoil_top)*0.1  # Multiplying values by cord length (values given are per unit cord)
 airfoil_bot = np.array(airfoil_bot)*0.1 # Multiplying values by cord length (values given are per unit cord)
@@ -160,9 +159,9 @@ for i,a in enumerate(alpha):
     Dt, Dt_err = TotalDrag(V_pos/100, V_r, V_r_err, U_inf, U_inf_err)
 
     # Finding normal, axial forces and moment forces
-    N, dN = NormalForce(p_top, p_bot, p_top_err, p_bot_err, airfoil_top, airfoil_bot)
-    A, dA = AxialForce(p_top, p_bot, p_top_err, p_bot_err, airfoil_top, airfoil_bot)
-    M, dM = MomentLE(p_top, p_bot, p_top_err, p_bot_err, airfoil_top, airfoil_bot)
+    N, dN = NormalForce(p_top, p_bot, p_top_err, p_bot_err, airfoil_top, airfoil_bot, a)
+    A, dA = AxialForce(p_top, p_bot, p_top_err, p_bot_err, airfoil_top, airfoil_bot, a)
+    M, dM = MomentLE(p_top, p_bot, p_top_err, p_bot_err, airfoil_top, airfoil_bot, a)
 
     # Finding lift and drag forces
     L, dL = LiftForce(a, dalpha, N, dN, A, dA)

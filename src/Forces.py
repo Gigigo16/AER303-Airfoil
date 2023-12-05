@@ -1,6 +1,6 @@
 import numpy as np
 
-def NormalForce(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot: np.array, top_p_pos: np.array, bot_p_pos: np.array):
+def NormalForce(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot: np.array, top_p_pos: np.array, bot_p_pos: np.array, alpha):
     '''
     Returns the Normal force for pressure distribution.
 
@@ -31,9 +31,15 @@ def NormalForce(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot
 
     theta_upper= np.arctan(np.diff(y_upper)/np.diff(x_upper))
     theta_lower= np.arctan(np.diff(y_lower)/np.diff(x_lower))
-    
+
+
     ds_upper = np.sqrt(np.diff(x_upper)**2 + np.diff(y_upper)**2)
     ds_lower = np.sqrt(np.diff(x_lower)**2 + np.diff(y_lower)**2)
+
+    x_upper = np.diff(x_upper)
+    x_lower = np.diff(x_lower)
+    y_upper = np.diff(y_upper)
+    y_lower = np.diff(y_lower)
     
     n = 0
     dn = 0
@@ -51,7 +57,7 @@ def NormalForce(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot
     
     return n, dn
 
-def AxialForce(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot: np.array, top_p_pos: np.array, bot_p_pos: np.array):
+def AxialForce(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot: np.array, top_p_pos: np.array, bot_p_pos: np.array, alpha):
     '''
     Returns the Axial force for pressure distribution.
 
@@ -85,6 +91,11 @@ def AxialForce(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot:
     ds_upper = np.sqrt(np.diff(x_upper)**2 + np.diff(y_upper)**2)
     ds_lower = np.sqrt(np.diff(x_lower)**2 + np.diff(y_lower)**2)
     
+    x_upper = np.diff(x_upper)
+    x_lower = np.diff(x_lower)
+    y_upper = np.diff(y_upper)
+    y_lower = np.diff(y_lower)
+
     a = 0
     da = 0
 
@@ -156,11 +167,11 @@ def PressureDragForce(alpha: float, dalpha: float, n: float, dn: float, a: float
     '''
 
     dp = n * np.sin(np.deg2rad(alpha)) + a * np.cos(np.deg2rad(alpha))
-    ddp =  np.sqrt((np.sin(np.deg2rad(alpha)) * dn)**2 + (np.cos(np.deg2rad(alpha)) * da)**2 + ((n*np.cos(np.deg2rad(alpha)) - a*np.sin(np.deg2rad(alpha)))*np.deg2rad(alpha))**2)
+    ddp =  np.sqrt((np.sin(np.deg2rad(alpha)) * dn)**2 + (np.cos(np.deg2rad(alpha)) * da)**2 + ((n*np.cos(np.deg2rad(alpha)) - a*np.sin(np.deg2rad(alpha)))*np.deg2rad(dalpha))**2)
 
     return dp, ddp
 
-def MomentLE(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot: np.array, top_p_pos: np.array, bot_p_pos: np.array):
+def MomentLE(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot: np.array, top_p_pos: np.array, bot_p_pos: np.array, alpha):
     '''
     Returns the Moment about the leading edge 
     acting on the airfoil for given pressure distribution.
@@ -188,25 +199,29 @@ def MomentLE(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot: n
     x_lower = [row[0] for row in bot_p_pos]
     y_upper = [row[1] for row in top_p_pos]
     y_lower = [row[1] for row in bot_p_pos]
-    
     theta_upper= np.arctan(np.diff(y_upper)/np.diff(x_upper))
     theta_lower= np.arctan(np.diff(y_lower)/np.diff(x_lower))
     
     ds_upper = np.sqrt(np.diff(x_upper)**2 + np.diff(y_upper)**2)
     ds_lower = np.sqrt(np.diff(x_lower)**2 + np.diff(y_lower)**2)   
 
+    x_upper = np.diff(x_upper)
+    x_lower = np.diff(x_lower)
+    y_upper = np.diff(y_upper)
+    y_lower = np.diff(y_lower)
+
     m = 0
     dm = 0
 
     for i in range(len(ds_upper)):
-        m += 0.5*(p_top[i] + p_top[i+1])*np.cos(theta_upper[i])*x_upper[i]*ds_upper[i]
-        m += -0.5*(p_top[i] + p_top[i+1])*np.sin(theta_upper[i])*y_upper[i]*ds_upper[i]
+        m += 0.5*(p_top[i] + p_top[i+1])*np.cos(theta_upper[i]-np.deg2rad(alpha))*x_upper[i]*ds_upper[i]
+        m += -0.5*(p_top[i] + p_top[i+1])*np.sin(theta_upper[i]-np.deg2rad(alpha))*y_upper[i]*ds_upper[i]
 
         dm += (0.5*np.cos(theta_upper[i])*x_upper[i]*ds_upper[i]-0.5*np.sin(theta_upper[i])*y_upper[i]*ds_upper[i]*p_err_top[i])**2
 
     for i in range(len(ds_lower)):
-        m += 0.5*(p_bot[i] + p_bot[i+1])*np.cos(theta_lower[i])*x_lower[i]*ds_lower[i]
-        m += 0.5*(p_bot[i] + p_bot[i+1])*np.sin(theta_lower[i])*y_lower[i]*ds_lower[i]
+        m += 0.5*(p_bot[i] + p_bot[i+1])*np.cos(theta_lower[i]-np.deg2rad(alpha))*x_lower[i]*ds_lower[i]
+        m += 0.5*(p_bot[i] + p_bot[i+1])*np.sin(theta_lower[i]-np.deg2rad(alpha))*y_lower[i]*ds_lower[i]
 
         dm += (0.5*np.cos(theta_lower[i])*x_lower[i]*ds_lower[i]+0.5*np.sin(theta_lower[i])*y_lower[i]*ds_lower[i]*p_err_bot[i])**2
     

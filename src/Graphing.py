@@ -49,8 +49,8 @@ def CpGraph(a: np.int32, Cp_top: np.array, Cp_bot: np.array, Cp_top_err: np.arra
     plt.rcParams.update({'font.size': 12})
 
     plt.plot(xfoil_x, xfoil_cp, color = 'r')
-    plt.errorbar(air_top_tap_pos, Cp_top, yerr=Cp_top_err, color = 'c', marker = 'o')
-    plt.errorbar(air_bot_tap_pos, Cp_bot, yerr=Cp_bot_err, color = 'c', marker = 'o')
+    plt.errorbar(air_top_tap_pos, Cp_top, yerr=Cp_top_err, color = 'c', marker = 'o', capsize=2, elinewidth=1, markeredgewidth=2)
+    plt.errorbar(air_bot_tap_pos, Cp_bot, yerr=Cp_bot_err, color = 'c', marker = 'o', capsize=2, elinewidth=1, markeredgewidth=2)
     params = {'mathtext.default': 'regular' }          
     plt.rcParams.update(params)
     plt.title('$C_{P}$ vs x/c: $α$ = ' + str(a) + u'\N{DEGREE SIGN}')
@@ -79,7 +79,7 @@ def VelGraph(a: np.int32, V_r: np.array, V_r_err: np.array, V_pos: np.array):
         tap positions
     '''
 
-    plt.errorbar(V_r, V_pos, xerr=V_r_err, color = 'c', marker = 'o')
+    plt.errorbar(V_r, V_pos, xerr=V_r_err, color = 'c', marker = 'o', capsize=2, elinewidth=1, markeredgewidth=2)
     params = {'mathtext.default': 'regular' }          
     plt.rcParams.update(params)
     plt.title('Wake velocity profile: $α$ = ' + str(a) + u'\N{DEGREE SIGN}')
@@ -141,7 +141,10 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
     uiuc_a = []
     uiuc_cl = []
     uiuc_cd = []
+    
+    uiuc_am = []
     uiuc_cm = []
+
 
     with open(r"data\UIUC_Data\UIUC_Data.csv", newline='') as U:
         reader = csv.reader(U, delimiter=';')
@@ -151,11 +154,19 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
             uiuc_a.append(float(row[0]))
             uiuc_cl.append(float(row[1]))
             uiuc_cd.append(float(row[2]))
-            #uiuc_cm.append(float(row[3]))
+
+    with open(r"data\UIUC_Data\UIUC_DataCm.csv", newline='') as U:
+        reader = csv.reader(U, delimiter=';')
+        reader = list(reader)
+        reader = reader[1:]
+        for row in reader:
+            uiuc_am.append(float(row[0]))
+            uiuc_cm.append(float(row[1]))
+
 
     print(" Saving C_l-a.png..")
     plt.plot(xfoil_a, xfoil_cl, color = 'r')
-    plt.errorbar(a, Cl, yerr=dCl, color = 'c', marker = '.')
+    plt.errorbar(a, Cl, xerr=1, yerr=dCl, color = 'c', marker = '.', capsize=2, elinewidth=1, markeredgewidth=2)
     plt.plot(uiuc_a, uiuc_cl, color = 'g')
     params = {'mathtext.default': 'regular' }          
     plt.rcParams.update(params)
@@ -170,7 +181,7 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
 
     print(" Saving C_d-a.png..")
     plt.plot(xfoil_a, xfoil_cdp, color = 'r')
-    plt.errorbar(a, Cd, yerr=dCd, color = 'c', marker = '.')
+    plt.errorbar(a, Cd, xerr=1, yerr=dCd, color = 'c', marker = '.', capsize=2, elinewidth=1, markeredgewidth=2)
     plt.plot(uiuc_a, uiuc_cd, color = 'g')
     params = {'mathtext.default': 'regular' }
     plt.rcParams.update(params)
@@ -185,8 +196,8 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
 
     print(" Saving C_m-a.png..")
     plt.plot(xfoil_a, xfoil_cm, color = 'r')
-    plt.errorbar(a, Cm, yerr=dCm, color = 'c', marker = '.')
-    #plt.plot(uiuc_a, uiuc_cm, color = 'g')
+    plt.errorbar(a, Cm, xerr=1, yerr=dCm, color = 'c', marker = '.', capsize=2, elinewidth=1, markeredgewidth=2)
+    plt.plot(uiuc_am, uiuc_cm, color = 'g')
     params = {'mathtext.default': 'regular' }
     plt.rcParams.update(params)
     plt.rcParams.update({'font.size': 12})
@@ -200,7 +211,7 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
     
     print(" Saving C_Dt-a.png..")
     plt.plot(xfoil_a, xfoil_cd, color = 'r')
-    plt.errorbar(a, Cdt, yerr=dCdt, color='c', marker='.')
+    plt.errorbar(a, Cdt, xerr=1, yerr=dCdt, color='c', marker='.', capsize=2, elinewidth=1, markeredgewidth=2)
     params = {'mathtext.default': 'regular'}
     plt.rcParams.update(params)
     plt.rcParams.update({'font.size': 12})
@@ -215,7 +226,7 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
     print(" Saving C_l-C_d.png..")
     plt.plot(xfoil_cdp, xfoil_cl, color='r')
     plt.plot(uiuc_cd, uiuc_cl, color='g')
-    plt.errorbar(Cd, Cl, xerr=dCd, yerr=dCl, color='c', marker='.')
+    plt.errorbar(Cd, Cl, xerr=dCd, yerr=dCl, color='c', marker='.', capsize=2, elinewidth=1, markeredgewidth=2)
     params = {'mathtext.default': 'regular'}
     plt.rcParams.update(params)
     plt.rcParams.update({'font.size': 12})
