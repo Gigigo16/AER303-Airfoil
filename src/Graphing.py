@@ -185,21 +185,6 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
     plt.savefig('results\C_l-graphs\C_l-a.png')
     plt.clf()
 
-    print(" Saving C_d-a.png..")
-    plt.plot(xfoil_a, xfoil_cdp, color = 'r')
-    plt.errorbar(a, Cd, xerr=1, yerr=dCd, color = 'c', marker = '.', capsize=2, elinewidth=1, markeredgewidth=2)
-    plt.plot(uiuc_a, uiuc_cd, color = 'g')
-    params = {'mathtext.default': 'regular' }
-    plt.rcParams.update(params)
-    plt.rcParams.update({'font.size': 12})
-    plt.title('$C_{D}$ vs $α$')
-    plt.xlabel('$α$')
-    plt.ylabel('$C_{D}$')
-    plt.legend(['Theoretical XFoil Data', 'UIUC Data', 'Experimental $C_{D}$'])
-    plt.grid()
-    plt.savefig('results\C_d-graphs\C_d-a.png')
-    plt.clf()
-
     print(" Saving C_m-a.png..")
     plt.plot(xfoil_a, xfoil_cm, color = 'r')
     plt.errorbar(a, Cm, xerr=1, yerr=dCm, color = 'c', marker = '.', capsize=2, elinewidth=1, markeredgewidth=2)
