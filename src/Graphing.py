@@ -92,7 +92,7 @@ def VelGraph(a: np.int32, V_r: np.array, V_r_err: np.array, V_pos: np.array):
     # plt.show()
     plt.clf()
 
-def CoeffGraph(a: np.int32, V_r: np.array, V_r_err: np.array, V_pos: np.array):
+def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.array, Cm: np.array, dCm: np.array, Cdt: np.array, dCdt: np.array):
     '''
     PLots the Coefficient of L and D and M distribution.
 
@@ -100,12 +100,22 @@ def CoeffGraph(a: np.int32, V_r: np.array, V_r_err: np.array, V_pos: np.array):
     -----------   
     a : np.int32
         angle of attack
-    V_r : np.array
-        vel dist
-    V_r_err : np.array
-        error in vel dist
-    V_pos : np.array
-        tap positions
+    Cl : np.array
+        lift coefficient
+    dCl : np.array
+        lift coefficient error
+    Cd : np.array
+        drag coefficient
+    dCd : np.array
+        drag coefficient error
+    Cm : np.array
+        moment coefficient
+    dCm : np.array
+        moment coefficient error
+    Cdt : np.array
+        total drag coefficient
+    dCdt : np.array
+        total drag coefficient error
     '''
 
     Xfoil_parsed = []
@@ -126,20 +136,58 @@ def CoeffGraph(a: np.int32, V_r: np.array, V_r_err: np.array, V_pos: np.array):
         xfoil_cd.append(float(line[2]))
         xfoil_cm.append(float(line[4]))
 
-    plt.rcParams['mathtext.fontset'] = 'stix'
-    plt.rcParams['font.family'] = 'STIXGeneral'
-    plt.rcParams.update({'font.size': 12})
 
+    print(" Saving C_l-a.png..")
     plt.plot(xfoil_a, xfoil_cl, color = 'r')
-    # plt.errorbar(air_top_tap_pos, Cp_top, yerr=Cp_top_err, color = 'c', marker = 'o')
-    # plt.errorbar(air_bot_tap_pos, Cp_bot, yerr=Cp_bot_err, color = 'c', marker = 'o')
+    plt.errorbar(a, Cl, yerr=dCl, color = 'c', marker = '.')
     params = {'mathtext.default': 'regular' }          
     plt.rcParams.update(params)
+    plt.rcParams.update({'font.size': 12})
     plt.title('$C_{L}$ vs $α$')
     plt.xlabel('$α$')
     plt.ylabel('$C_{L}$')
     plt.legend(['Theoretical XFoil Data', 'Experimental $C_{L}$'])
     plt.grid()
-    # plt.savefig('results\C_p-graphs\C_p-a%d.png'%a)
-    plt.show()
+    plt.savefig('results\C_l-graphs\C_l-a.png')
+    plt.clf()
+
+    print(" Saving C_d-a.png..")
+    plt.plot(xfoil_a, xfoil_cd, color = 'r')
+    plt.errorbar(a, Cd, yerr=dCd, color = 'c', marker = '.')
+    params = {'mathtext.default': 'regular' }
+    plt.rcParams.update(params)
+    plt.rcParams.update({'font.size': 12})
+    plt.title('$C_{D}$ vs $α$')
+    plt.xlabel('$α$')
+    plt.ylabel('$C_{D}$')
+    plt.legend(['Theoretical XFoil Data', 'Experimental $C_{D}$'])
+    plt.grid()
+    plt.savefig('results\C_d-graphs\C_d-a.png')
+    plt.clf()
+
+    print(" Saving C_m-a.png..")
+    plt.plot(xfoil_a, xfoil_cm, color = 'r')
+    plt.errorbar(a, Cm, yerr=dCm, color = 'c', marker = '.')
+    params = {'mathtext.default': 'regular' }
+    plt.rcParams.update(params)
+    plt.rcParams.update({'font.size': 12})
+    plt.title('$C_{M}$ vs $α$')
+    plt.xlabel('$α$')
+    plt.ylabel('$C_{M}$')
+    plt.legend(['Theoretical XFoil Data', 'Experimental $C_{M}$'])
+    plt.grid()
+    plt.savefig('results\C_m-graphs\C_m-a.png')
+    plt.clf()
+    
+    print(" Saving C_Dt-a.png..")
+    plt.errorbar(a, Cdt, yerr=dCdt, color='c', marker='.')
+    params = {'mathtext.default': 'regular'}
+    plt.rcParams.update(params)
+    plt.rcParams.update({'font.size': 12})
+    plt.title('Total Drag ($C_{Dt}$) vs $α$')
+    plt.xlabel('$α$')
+    plt.ylabel('$C_{Dt}$')
+    plt.legend(['Experimental $C_{Dt}$'])
+    plt.grid()
+    plt.savefig('results\C_Dt-graphs\C_Dt-a.png')
     plt.clf()
