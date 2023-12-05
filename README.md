@@ -22,6 +22,7 @@ The code in this respository has the following depedancies:
 - [Matplotlib](https://matplotlib.org/)
 - [Scipi](https://scipy.org/)
 - [Pandas](https://pandas.pydata.org/)
+- [statsmodels](https://www.statsmodels.org/stable/index.html)
 
 ## How to Replicate Results:
 
