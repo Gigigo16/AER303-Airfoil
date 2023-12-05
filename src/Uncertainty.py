@@ -49,7 +49,7 @@ def DataErr(raw_p: np.array):
     dt = 1/30000
     T = np.trapz(Bxx[:lim], dx=dt) 
 
-    N = len(raw_p)/(2*T) * dt
+    N = len(raw_p)/(2*T)*dt
     std = np.std(raw_p)
     dP = 1.96*std/np.sqrt(N)
 

@@ -56,30 +56,32 @@ def Velocity(p_r1: np.array, p_r2: np.array, p_r1_err: np.array, p_r2_err: np.ar
     P_combined = []
     P_combined_err = []
     V_r_err = []
+
+    print(p_r1_err)
     
     if pos_r1[0]<pos_r2[0]:
         for i in range(len(V_pos)):
             if i%2 == 0:
                 P_combined.append(p_r1[0][int(i/2)])
-                P_combined_err.append(p_r1_err[int(i/2)])
+                P_combined_err.append(p_r1_err[0][int(i/2)])
                 V_r.append(v_r1[0][int(i/2)])
                 V_r_err.append(v_r1_err[0][int(i/2)])
             else:
                 V_r.append(v_r2[0][int((i-1)/2)])
                 P_combined.append(p_r2[0][int((i-1)/2)])
-                P_combined_err.append(p_r2_err[int((i-1)/2)])
+                P_combined_err.append(p_r2_err[0][int((i-1)/2)])
                 V_r_err.append(v_r2_err[0][int((i-1)/2)])
     else:
         for i in range(len(V_pos)):
             if i%2 == 0:
                 V_r.append(v_r2[0][int(i/2)])
                 P_combined.append(p_r2[0][int(i/2)])
-                P_combined_err.append(p_r2_err[int(i/2)])
+                P_combined_err.append(p_r2_err[0][int(i/2)])
                 V_r_err.append(v_r2_err[0][int(i/2)])
             else:
                 V_r.append(v_r1[0][int((i-1)/2)])
                 P_combined.append(p_r1[0][int((i-1)/2)])
-                P_combined_err.append(p_r1_err[int((i-1)/2)])
+                P_combined_err.append(p_r1_err[0][int((i-1)/2)])
                 V_r_err.append(v_r1_err[0][int((i-1)/2)])
 
     return U_inf, U_inf_err, V_r, V_r_err, V_pos, P_combined, P_combined_err

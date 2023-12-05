@@ -100,16 +100,16 @@ for i,a in enumerate(alpha):
         data_err_a = [eval(e) for e in data_err_a[i]]
         p_top_err = data_err_a[0:12]
         p_bot_err = data_err_a[12:19]
-    if i == 0:
-        with open('data\CSV\dP_rakepos1.csv') as f:
-            reader = csv.reader(f)
-            data_err_r1 = list(map(np.float64,reader))
-            p_r1_err = np.array(data_err_r1)
+    with open('data\CSV\dP_rakepos1.csv') as f:
+        reader = csv.reader(f)
+        data_err_r1 = list(map(np.float64,reader))
+        p_r1_err = np.array(data_err_r1)
 
-        with open('data\CSV\dP_rakepos2.csv') as f:
-            reader = csv.reader(f)
-            data_err_r2 = list(map(np.float64,reader))
-            p_r2_err = np.array(data_err_r2)
+    with open('data\CSV\dP_rakepos2.csv') as f:
+        reader = csv.reader(f)
+        data_err_r2 = list(map(np.float64,reader))
+        p_r2_err = np.array(data_err_r2)
+
 
     # finding the wake velocity distribution:
     pos_r1 = y_0[i]
@@ -121,10 +121,8 @@ for i,a in enumerate(alpha):
     VelGraph(a, V_r, V_r_err, V_pos)
 
 
-    
     #finding the dynamic freestream pressure
     q_inf, q_inf_err = DynPressure(U_inf, U_inf_err)
-
 
 
     #finding the Cp distribution over the airfoil
