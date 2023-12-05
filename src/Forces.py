@@ -24,11 +24,11 @@ def NormalForce(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot
     n: Normal Force
     dn: Normal Force uncertainty
     '''
-    x_upper = top_p_pos[:, 0]
-    x_lower = bot_p_pos[:, 0]
-    y_upper = top_p_pos[:, 1]
-    y_lower = bot_p_pos[:, 1]
-    
+    x_upper = [row[0] for row in top_p_pos]
+    x_lower = [row[0] for row in bot_p_pos]
+    y_upper = [row[1] for row in top_p_pos]
+    y_lower = [row[1] for row in bot_p_pos]
+
     theta_upper= np.arctan(np.diff(y_upper)/np.diff(x_upper))
     theta_lower= np.arctan(np.diff(y_lower)/np.diff(x_lower))
     
@@ -37,22 +37,21 @@ def NormalForce(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot
     
     n = 0
     dn = 0
-
     # Trapezoidal numerical integration
     for i in range(len(ds_upper)):
         n += -0.5 * (p_top[i] + p_top[i+1]) * np.cos(theta_upper[i]) * ds_upper[i]
-        dn += (-0.5*p_err_top[i]*np.cos(theta_upper)*ds_upper[i])**2 + (-0.5*p_err_top[i+1]*np.cos(theta_upper[i])*ds_upper[i])**2
+        dn += (-0.5*p_err_top[i]*np.cos(theta_upper[i])*ds_upper[i])**2 + (-0.5*p_err_top[i+1]*np.cos(theta_upper[i])*ds_upper[i])**2
     
     for i in range(len(ds_lower)):
         n += 0.5 * (p_bot[i] + p_bot[i+1]) * np.cos(theta_lower[i]) * ds_lower[i]
-        dn += (0.5*p_err_bot[i]*np.cos(theta_lower)*ds_lower[i])**2 + (0.5*p_err_bot[i+1]*np.cos(theta_lower[i])*ds_lower[i])**2
+        dn += (0.5*p_err_bot[i]*np.cos(theta_lower[i])*ds_lower[i])**2 + (0.5*p_err_bot[i+1]*np.cos(theta_lower[i])*ds_lower[i])**2
     
     # Calculating error (position error assumed to be 0)
     dn = np.sqrt(dn)
     
     return n, dn
 
-def AxialForce(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top: np.array, top_p_pos: np.array, bot_p_pos: np.array):
+def AxialForce(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot: np.array, top_p_pos: np.array, bot_p_pos: np.array):
     '''
     Returns the Axial force for pressure distribution.
 
@@ -75,10 +74,10 @@ def AxialForce(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top:
     a: Axial Force
     da: Axial Force uncertainty
     '''
-    x_upper = top_p_pos[:, 0]
-    x_lower = bot_p_pos[:, 0]
-    y_upper = top_p_pos[:, 1]
-    y_lower = bot_p_pos[:, 1]
+    x_upper = [row[0] for row in top_p_pos]
+    x_lower = [row[0] for row in bot_p_pos]
+    y_upper = [row[1] for row in top_p_pos]
+    y_lower = [row[1] for row in bot_p_pos]
     
     theta_upper= np.arctan(np.diff(y_upper)/np.diff(x_upper))
     theta_lower= np.arctan(np.diff(y_lower)/np.diff(x_lower))
@@ -92,14 +91,14 @@ def AxialForce(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top:
     # Trapezoidal numerical integration
     for i in range(len(ds_upper)):
         a += -0.5 * (p_top[i] + p_top[i+1]) * np.sin(theta_upper[i]) * ds_upper[i]
-        da += (-0.5*p_err_top[i]*np.sin(theta_upper)*ds_upper[i])**2 + (-0.5*p_err_top[i+1]*np.sin(theta_upper[i])*ds_upper[i])**2
+        da += (-0.5*p_err_top[i]*np.sin(theta_upper[i])*ds_upper[i])**2 + (-0.5*p_err_top[i+1]*np.sin(theta_upper[i])*ds_upper[i])**2
     
     for i in range(len(ds_lower)):
-        n += 0.5 * (p_bot[i] + p_bot[i+1]) * np.sin(theta_lower[i]) * ds_lower[i]
-        da += (0.5*p_err_bot[i]*np.sin(theta_lower)*ds_lower[i])**2 + (0.5*p_err_bot[i+1]*np.sin(theta_lower[i])*ds_lower[i])**2
+        a += 0.5 * (p_bot[i] + p_bot[i+1]) * np.sin(theta_lower[i]) * ds_lower[i]
+        da += (0.5*p_err_bot[i]*np.sin(theta_lower[i])*ds_lower[i])**2 + (0.5*p_err_bot[i+1]*np.sin(theta_lower[i])*ds_lower[i])**2
     
     # Calculating error (position error assumed to be 0)
-    dn = np.sqrt(dn)
+    da = np.sqrt(da)
     
     return a, da
 
@@ -128,7 +127,7 @@ def LiftForce(alpha: float, dalpha: float, n: float, dn: float, a: float, da: fl
     '''
 
     l = n * np.cos(np.deg2rad(alpha)) - a * np.sin(np.deg2rad(alpha))
-    dl =  np.sqrt((np.cos(np.deg2rad(alpha)) * dn)**2 + (np.sin(np.deg2rad(alpha)) * da)**2 + ((-n*np.sin(np.deg2rad(alpha)) - a*np.cos(np.deg2rad(alpha)))*np.deg2rad(alpha))**2)
+    dl =  np.sqrt((np.cos(np.deg2rad(alpha)) * dn)**2 + (np.sin(np.deg2rad(alpha)) * da)**2 + ((-n*np.sin(np.deg2rad(alpha)) - a*np.cos(np.deg2rad(alpha)))*np.deg2rad(dalpha))**2)
 
     return l, dl
 
@@ -161,7 +160,7 @@ def PressureDragForce(alpha: float, dalpha: float, n: float, dn: float, a: float
 
     return dp, ddp
 
-def MomentLE(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top: np.array, top_p_pos: np.array, bot_p_pos: np.array):
+def MomentLE(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot: np.array, top_p_pos: np.array, bot_p_pos: np.array):
     '''
     Returns the Moment about the leading edge 
     acting on the airfoil for given pressure distribution.
@@ -185,10 +184,10 @@ def MomentLE(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top: n
     m: Moment 
     dm: Moment uncertainty
     '''
-    x_upper = top_p_pos[:, 0]
-    x_lower = bot_p_pos[:, 0]
-    y_upper = top_p_pos[:, 1]
-    y_lower = bot_p_pos[:, 1]
+    x_upper = [row[0] for row in top_p_pos]
+    x_lower = [row[0] for row in bot_p_pos]
+    y_upper = [row[1] for row in top_p_pos]
+    y_lower = [row[1] for row in bot_p_pos]
     
     theta_upper= np.arctan(np.diff(y_upper)/np.diff(x_upper))
     theta_lower= np.arctan(np.diff(y_lower)/np.diff(x_lower))
@@ -214,14 +213,12 @@ def MomentLE(p_top: np.array, p_bot: np.array, p_err_bot: np.array, p_err_top: n
     dm = np.sqrt(dm)
     return m, dm
 
-def TotalDrag(rho: float, y: np.array, v:np.array, v_err: np.array, u_inf: float, u_inf_err: float):
+def TotalDrag(y: np.array, v:np.array, v_err: np.array, u_inf: float, u_inf_err: float, rho: float=1.29):
     '''
     Returns the total drag force as a result of momentum loss of air.
 
     Parameters:
     -----------   
-    rho : float
-        air density (kg/m^3)
     y : np.array
         y position of measurement points (m)
     v : float
@@ -232,6 +229,8 @@ def TotalDrag(rho: float, y: np.array, v:np.array, v_err: np.array, u_inf: float
         free stream air velocity (m/s)
     u_inf_err : float
         free stream air velocity uncertainty (m/s)
+    rho : float
+        air density (kg/m^3)
 
     Returns:
     --------
@@ -242,8 +241,8 @@ def TotalDrag(rho: float, y: np.array, v:np.array, v_err: np.array, u_inf: float
     ddt = 0
     delta_y = np.diff(y)
     for i in range(len(y)-1):
-        dt += rho * 0.5 * ((v[i]*(u_inf-v[i]))+(v[i+1]*(u_inf-v[i+1])))*delta_y
-        ddt += (rho*0.5*delta_y*(u_inf-2*v[i])*v_err[i])**2 + (rho*0.5*delta_y*(v[i+1]+v[i])*u_inf_err[i])**2
+        dt += rho * 0.5 * ((v[i]*(u_inf-v[i]))+(v[i+1]*(u_inf-v[i+1])))*delta_y[i]
+        ddt += (rho*0.5*delta_y[i]*(u_inf-2*v[i])*v_err[i])**2 + (rho*0.5*delta_y[i]*(v[i+1]+v[i])*u_inf_err)**2
 
     ddt = np.sqrt(ddt)
     return dt, ddt
