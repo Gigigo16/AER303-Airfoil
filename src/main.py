@@ -53,7 +53,7 @@ with open(".\data\Clark_Y_Airfoil.csv", newline='') as f:
 # Converting to float
 i = 0
 for row in data:
-    data[i] = list(map(float, row))
+    data[i] = list(map(float, row)) 
     i += 1
 
 is_top = True
@@ -78,6 +78,7 @@ print("Loading Experimental Data...")
 # Data array initialization
 pressure_data = []
 rake_press = []
+rake_press_err = []
 y_rake_pos = []
 Cl_list = []
 dCl_list = []
@@ -103,8 +104,6 @@ for i,a in enumerate(alpha):
     # 'f_s', 'i', 'k', 'p_airfoil', 'p_rake1', 'p_rake2', 'prompt', 'spdata', 'sptime', 
     # 't_s', 'wpdata', 'wpdata2', 'wptime1', 'wptime2', 'x', 'y', 'y2', '__function_workspace__']
 
-
-
     # data calibration:
     p_top = (data_raw['p_airfoil'][0][0:12]*gain + offset)*Hg2Pa
     p_bot = (data_raw['p_airfoil'][0][12:19]*gain + offset)*Hg2Pa
@@ -114,8 +113,6 @@ for i,a in enumerate(alpha):
     p = (data_raw['p_airfoil'][0]*gain + offset)*Hg2Pa
     pressure_data.append(list(map(float, p)))
     
-
-
     # Initializing error arrays
     p_r1_err = np.zeros_like(p_r1) #temp
     p_r2_err = np.zeros_like(p_r2) #temp
@@ -147,6 +144,7 @@ for i,a in enumerate(alpha):
     U_inf, U_inf_err, V_r, V_r_err, V_pos, P_comb, P_comb_err = Velocity(p_r1, p_r2, p_r1_err, p_r2_err, pos_r1, pos_r2)
 
     rake_press.append(list(map(float, P_comb)))
+    rake_press_err.append(list(map(float, P_comb_err)))
     y_rake_pos.append(list(map(float, V_pos)))
 
     # Plotting velocity distribution
@@ -157,7 +155,6 @@ for i,a in enumerate(alpha):
     q_inf, q_inf_err = DynPressure(U_inf, U_inf_err)
 
 
-    #finding the Cp distribution over the airfoil
 
     #finding the lift and total drag
     Dt, Dt_err = TotalDrag(V_pos/100, V_r, V_r_err, U_inf, U_inf_err)
@@ -200,7 +197,8 @@ print("=========================================")
 # Plotting data
 CoeffGraph(alpha, Cl_list, dCl_list, Cd_list, dCd_list, Cm_list, dCm_list, Cdt_list, dCdt_list)
 
-print("Saving Data...")
+print("Saving Data CSVs...")
 # Saving data raw data to CSV
 PressuretoCSV(alpha, np.array(pressure_data))
 RakePressuretoCSV(alpha, np.array(rake_press), np.array(y_rake_pos))
+RakeUncertaintytoCSV(alpha, np.array(rake_press_err), np.array(y_rake_pos))

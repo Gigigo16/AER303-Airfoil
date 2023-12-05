@@ -143,16 +143,27 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
     uiuc_cd = []
     uiuc_cm = []
 
+    with open(r"data\UIUC_Data\UIUC_Data.csv", newline='') as U:
+        reader = csv.reader(U, delimiter=';')
+        reader = list(reader)
+        reader = reader[1:]
+        for row in reader:
+            uiuc_a.append(float(row[0]))
+            uiuc_cl.append(float(row[1]))
+            uiuc_cd.append(float(row[2]))
+            #uiuc_cm.append(float(row[3]))
+
     print(" Saving C_l-a.png..")
     plt.plot(xfoil_a, xfoil_cl, color = 'r')
     plt.errorbar(a, Cl, yerr=dCl, color = 'c', marker = '.')
+    plt.plot(uiuc_a, uiuc_cl, color = 'g')
     params = {'mathtext.default': 'regular' }          
     plt.rcParams.update(params)
     plt.rcParams.update({'font.size': 12})
     plt.title('$C_{L}$ vs $α$')
     plt.xlabel('$α$')
     plt.ylabel('$C_{L}$')
-    plt.legend(['Theoretical XFoil Data', 'Experimental $C_{L}$'])
+    plt.legend(['Theoretical XFoil Data', 'UIUC Data', 'Experimental $C_{L}$'])
     plt.grid()
     plt.savefig('results\C_l-graphs\C_l-a.png')
     plt.clf()
@@ -160,13 +171,14 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
     print(" Saving C_d-a.png..")
     plt.plot(xfoil_a, xfoil_cdp, color = 'r')
     plt.errorbar(a, Cd, yerr=dCd, color = 'c', marker = '.')
+    plt.plot(uiuc_a, uiuc_cd, color = 'g')
     params = {'mathtext.default': 'regular' }
     plt.rcParams.update(params)
     plt.rcParams.update({'font.size': 12})
     plt.title('$C_{D}$ vs $α$')
     plt.xlabel('$α$')
     plt.ylabel('$C_{D}$')
-    plt.legend(['Theoretical XFoil Data', 'Experimental $C_{D}$'])
+    plt.legend(['Theoretical XFoil Data', 'UIUC Data', 'Experimental $C_{D}$'])
     plt.grid()
     plt.savefig('results\C_d-graphs\C_d-a.png')
     plt.clf()
@@ -174,13 +186,14 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
     print(" Saving C_m-a.png..")
     plt.plot(xfoil_a, xfoil_cm, color = 'r')
     plt.errorbar(a, Cm, yerr=dCm, color = 'c', marker = '.')
+    #plt.plot(uiuc_a, uiuc_cm, color = 'g')
     params = {'mathtext.default': 'regular' }
     plt.rcParams.update(params)
     plt.rcParams.update({'font.size': 12})
     plt.title('$C_{M}$ vs $α$')
     plt.xlabel('$α$')
     plt.ylabel('$C_{M}$')
-    plt.legend(['Theoretical XFoil Data', 'Experimental $C_{M}$'])
+    plt.legend(['Theoretical XFoil Data', 'UIUC Data', 'Experimental $C_{M}$'])
     plt.grid()
     plt.savefig('results\C_m-graphs\C_m-a.png')
     plt.clf()
@@ -198,3 +211,18 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
     plt.grid()
     plt.savefig('results\C_Dt-graphs\C_Dt-a.png')
     plt.clf()
+
+    print(" Saving C_l-C_d.png..")
+    plt.plot(xfoil_cdp, xfoil_cl, color='r')
+    plt.plot(uiuc_cd, uiuc_cl, color='g')
+    plt.errorbar(Cd, Cl, xerr=dCd, yerr=dCl, color='c', marker='.')
+    params = {'mathtext.default': 'regular'}
+    plt.rcParams.update(params)
+    plt.rcParams.update({'font.size': 12})
+    plt.title('$C_{D}$ vs $C_{L}$')
+    plt.xlabel('$C_{D}$')
+    plt.ylabel('$C_{L}$')
+    plt.legend(['Theoretical XFoil Data', 'UIUC Data','Experimental $C_{L}$ vs $C_{D}$'])
+    plt.grid()
+    plt.savefig('results\C_l-vs-C_d-graphs\C_l-C_d.png')
+    
