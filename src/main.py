@@ -160,7 +160,7 @@ for i,a in enumerate(alpha):
     #finding the Cp distribution over the airfoil
 
     #finding the lift and total drag
-    Dt, Dt_err = TotalDrag(V_pos, V_r, V_r_err, U_inf, U_inf_err)
+    Dt, Dt_err = TotalDrag(V_pos/100, V_r, V_r_err, U_inf, U_inf_err)
 
     # Finding normal, axial forces and moment forces
     N, dN = NormalForce(p_top, p_bot, p_top_err, p_bot_err, airfoil_top, airfoil_bot)

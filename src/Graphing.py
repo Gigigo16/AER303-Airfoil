@@ -128,14 +128,20 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
     xfoil_a = []
     xfoil_cl = []
     xfoil_cd = []
+    xfoil_cdp = []
     xfoil_cm = []
 
     for line in Xfoil_parsed[:-1]:
         xfoil_a.append(float(line[0]))
         xfoil_cl.append(float(line[1]))
         xfoil_cd.append(float(line[2]))
+        xfoil_cdp.append(float(line[3]))
         xfoil_cm.append(float(line[4]))
 
+    uiuc_a = []
+    uiuc_cl = []
+    uiuc_cd = []
+    uiuc_cm = []
 
     print(" Saving C_l-a.png..")
     plt.plot(xfoil_a, xfoil_cl, color = 'r')
@@ -152,7 +158,7 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
     plt.clf()
 
     print(" Saving C_d-a.png..")
-    plt.plot(xfoil_a, xfoil_cd, color = 'r')
+    plt.plot(xfoil_a, xfoil_cdp, color = 'r')
     plt.errorbar(a, Cd, yerr=dCd, color = 'c', marker = '.')
     params = {'mathtext.default': 'regular' }
     plt.rcParams.update(params)
@@ -180,6 +186,7 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
     plt.clf()
     
     print(" Saving C_Dt-a.png..")
+    plt.plot(xfoil_a, xfoil_cd, color = 'r')
     plt.errorbar(a, Cdt, yerr=dCdt, color='c', marker='.')
     params = {'mathtext.default': 'regular'}
     plt.rcParams.update(params)
@@ -187,7 +194,7 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
     plt.title('Total Drag ($C_{Dt}$) vs $α$')
     plt.xlabel('$α$')
     plt.ylabel('$C_{Dt}$')
-    plt.legend(['Experimental $C_{Dt}$'])
+    plt.legend(['Theoretical XFoil Data','Experimental $C_{Dt}$'])
     plt.grid()
     plt.savefig('results\C_Dt-graphs\C_Dt-a.png')
     plt.clf()
