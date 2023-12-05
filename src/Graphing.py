@@ -89,6 +89,7 @@ def VelGraph(a: np.int32, V_r: np.array, V_r_err: np.array, V_pos: np.array):
     plt.legend(['Experimental velocity'])
     # plt.gca().invert_xaxis()
     plt.grid()
+    plt.ylim(5,30)
     plt.savefig('results\\vel-graphs\\vel-a%d.png'%a)
     # plt.show()
     plt.clf()
