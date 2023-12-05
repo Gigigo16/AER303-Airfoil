@@ -242,4 +242,20 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
     plt.legend(['Theoretical XFoil Data', 'UIUC Data','Experimental $C_{L}$ vs $C_{D}$'])
     plt.grid()
     plt.savefig('results\C_l-vs-C_d-graphs\C_l-C_d.png')
+    plt.clf()
+
+    print(" Saving C_d-C_dt.png..")
+    plt.plot(xfoil_a, xfoil_cdp, color='r')
+    plt.plot(xfoil_a, xfoil_cd, color='g')
+    plt.errorbar(a, Cd, xerr=1, yerr=dCd, color='c', marker='.', capsize=2, elinewidth=1, markeredgewidth=2)
+    plt.errorbar(a, Cdt, xerr=1, yerr=dCdt, color='m', marker='.', capsize=2, elinewidth=1, markeredgewidth=2)
+    params = {'mathtext.default': 'regular'}
+    plt.rcParams.update(params)
+    plt.rcParams.update({'font.size': 12})
+    plt.title('Pressire Drag ($C_{D}$) vs Total Drag ($C_{Dt}$)')
+    plt.xlabel('$α$')
+    plt.ylabel('$C_{D}$')
+    plt.legend(['Theoretical XFoil $C_{D}$ Data', 'Theoretical XFoil $C_{Dt}$ Data' ,'Experimental $C_{D}$', 'Experimental $C_{Dt}$'])
+    plt.grid()
+    plt.savefig('results\C_d-vs-C_dt-graphs\C_d-C_dt.png')
     
