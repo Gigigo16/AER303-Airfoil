@@ -132,13 +132,12 @@ for i,a in enumerate(alpha):
     with open('data\CSV\dP_rakepos1.csv') as f:
         reader = csv.reader(f)
         data_err_r1 = list(map(np.float64,reader))
-        p_r1_err = np.array(data_err_r1)
+        p_r1_err = np.array(data_err_r1)[i]
 
     with open('data\CSV\dP_rakepos2.csv') as f:
         reader = csv.reader(f)
         data_err_r2 = list(map(np.float64,reader))
-        p_r2_err = np.array(data_err_r2)
-        
+        p_r2_err = np.array(data_err_r2)[i]
 
     
     # finding the wake velocity distribution:
