@@ -141,7 +141,9 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
         xfoil_cm.append(float(line[4]))
 
     uiuc_a = []
+    uiuc_al = []
     uiuc_cl = []
+    uiuc_cl2 = []
     uiuc_cd = []
     
     uiuc_am = []
@@ -154,7 +156,7 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
         reader = reader[1:]
         for row in reader:
             uiuc_a.append(float(row[0]))
-            uiuc_cl.append(float(row[1]))
+            uiuc_cl2.append(float(row[1]))
             uiuc_cd.append(float(row[2]))
 
     with open(r"data\UIUC_Data\UIUC_DataCm.csv", newline='') as U:
@@ -162,14 +164,16 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
         reader = list(reader)
         reader = reader[1:]
         for row in reader:
-            uiuc_am.append(float(row[0]))
-            uiuc_cm.append(float(row[1]))
+            uiuc_al.append(float(row[0]))
+            uiuc_cl.append(float(row[1]))
+            uiuc_am.append(float(row[2]))
+            uiuc_cm.append(float(row[3]))
 
 
     print(" Saving C_l-a.png..")
     plt.plot(xfoil_a, xfoil_cl, color = 'r')
     plt.errorbar(a, Cl, xerr=1, yerr=dCl, color = 'c', marker = '.', capsize=2, elinewidth=1, markeredgewidth=2)
-    plt.plot(uiuc_a, uiuc_cl, color = 'g')
+    plt.plot(uiuc_al, uiuc_cl, color = 'g')
     params = {'mathtext.default': 'regular' }          
     plt.rcParams.update(params)
     plt.rcParams.update({'font.size': 12})
@@ -227,7 +231,7 @@ def CoeffGraph(a: np.int32, Cl: np.array, dCl: np.array, Cd: np.array, dCd: np.a
 
     print(" Saving C_l-C_d.png..")
     plt.plot(xfoil_cdp, xfoil_cl, color='r')
-    plt.plot(uiuc_cd, uiuc_cl, color='g')
+    plt.plot(uiuc_cd, uiuc_cl2, color='g')
     plt.errorbar(Cd, Cl, xerr=dCd, yerr=dCl, color='c', marker='.', capsize=2, elinewidth=1, markeredgewidth=2)
     params = {'mathtext.default': 'regular'}
     plt.rcParams.update(params)
