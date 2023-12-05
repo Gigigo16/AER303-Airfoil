@@ -206,9 +206,9 @@ def MomentLE(p_top: np.array, p_bot: np.array, p_err_top: np.array, p_err_bot: n
 
     for i in range(len(ds_lower)):
         m += 0.5*(p_bot[i] + p_bot[i+1])*np.cos(theta_lower[i])*x_lower[i]*ds_lower[i]
-        m += -0.5*(p_bot[i] + p_bot[i+1])*np.sin(theta_lower[i])*y_lower[i]*ds_lower[i]
+        m += 0.5*(p_bot[i] + p_bot[i+1])*np.sin(theta_lower[i])*y_lower[i]*ds_lower[i]
 
-        dm += (0.5*np.cos(theta_lower[i])*x_lower[i]*ds_lower[i]-0.5*np.sin(theta_lower[i])*y_lower[i]*ds_lower[i]*p_err_bot[i])**2
+        dm += (0.5*np.cos(theta_lower[i])*x_lower[i]*ds_lower[i]+0.5*np.sin(theta_lower[i])*y_lower[i]*ds_lower[i]*p_err_bot[i])**2
     
     dm = np.sqrt(dm)
     return m, dm
